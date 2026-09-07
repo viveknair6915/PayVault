@@ -4,7 +4,7 @@ PayVault is a secure, production-grade, mobile-first payment information managem
 
 ---
 
-## 📸 Application User Flow & Screenshots
+##  Application User Flow & Screenshots
 
 ### 1. Authentication & Google Sign-In
 ![1. Authentication & Google Sign-In](./Screenshots/image1.png)
@@ -36,16 +36,16 @@ PayVault is a secure, production-grade, mobile-first payment information managem
 
 ---
 
-## ✨ Features
+##  Features
 
-### 🔐 Authentication & Authorization
+###  Authentication & Authorization
 - **User Registration & Login**: Validated email and password creation with bcrypt 10-round hashing.
 - **Google OAuth Sign-In**: 1-click Google authentication with account chooser modal and JWT issuance.
 - **JWT Authentication**: Secure 7-day signed bearer tokens verified on protected API routes.
 - **Role-Based Access Control (RBAC)**: Strict role separation between standard `user` and `admin` roles.
 - **IDOR Protection**: Database queries strictly bound to `user: req.user._id`, preventing cross-user data tampering.
 
-### 👤 User Capabilities
+###  User Capabilities
 - **Multi-Payment Management**: Save multiple accounts across 5 supported payment channels.
 - **Dynamic Input Isolation**: Clean, focused forms rendering only the inputs required for the selected payment type.
 - **Data Masking & Privacy**: Account numbers, wallet addresses, and mobile numbers masked by default (`•••• •••• •••• 6735`) with instant reveal/hide toggle.
@@ -53,7 +53,7 @@ PayVault is a secure, production-grade, mobile-first payment information managem
 - **Complete CRUD Operations**: Create, read, update, and safely delete payment methods with confirmation dialogs.
 - **Profile Hub**: View account verification status, total saved methods, and session controls.
 
-### 💳 Supported Payment Channels
+### Supported Payment Channels
 | Payment Type | Stored Fields | Validation Rule |
 |---|---|---|
 | **Bank** | `bankName`, `branchName`, `accountHolderName`, `accountNumber`, `ifscCode` | 11-char IFSC (`^[A-Z]{4}0[A-Z0-9]{6}$`), 9-18 digit account number |
@@ -64,7 +64,7 @@ PayVault is a secure, production-grade, mobile-first payment information managem
 
 > **Strict Field Isolation**: Irrelevant fields are never stored as empty strings or legacy values. When editing a payment and switching its type (e.g. Bank to UPI), obsolete bank fields are automatically purged from the MongoDB document using `$unset`.
 
-### 👑 Administrator Capabilities
+###  Administrator Capabilities
 - **Platform Analytics**: Real-time summary metrics for registered users, total payment methods, and distribution across all 5 categories.
 - **Registered Users Directory**: Overview of all users, their assigned roles, and count of configured payment methods.
 - **Searchable Payment Directory**: Paginated directory with backend-powered regex search across username, email, bank name, IFSC, UPI ID, Paytm phone, and USDT address.
@@ -73,20 +73,20 @@ PayVault is a secure, production-grade, mobile-first payment information managem
 
 ---
 
-## ⚡ Quick Evaluation Credentials
+##  Quick Evaluation Credentials
 
 The login screen includes **1-Click quick fill buttons** to evaluate each persona immediately:
 
 | Role / Persona | Email | Password | Pre-configured Data |
 |---|---|---|---|
-| **👑 Admin User** | `admin@payvault.com` | `Admin@12345` | Global oversight, metrics, search/filter all payments |
-| **👤 Vivek Nair** | `demo@payvault.com` | `User@12345` | Complete portfolio (Bank, UPI, Paytm, PayPal, USDT) |
-| **👤 Rahul Sharma** | `rahul@payvault.com` | `User@12345` | ICICI Bank Account & Google Pay UPI ID |
-| **🌐 Google Sign-In** | Any Google ID | *Passwordless* | Auto-provisions and securely authenticates with JWT |
+| ** Admin User** | `admin@payvault.com` | `Admin@12345` | Global oversight, metrics, search/filter all payments |
+| ** Vivek Nair** | `demo@payvault.com` | `User@12345` | Complete portfolio (Bank, UPI, Paytm, PayPal, USDT) |
+| ** Rahul Sharma** | `rahul@payvault.com` | `User@12345` | ICICI Bank Account & Google Pay UPI ID |
+| ** Google Sign-In** | Any Google ID | *Passwordless* | Auto-provisions and securely authenticates with JWT |
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **Framework**: React 18 / 19 (Vite)
@@ -103,7 +103,7 @@ The login screen includes **1-Click quick fill buttons** to evaluate each person
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 PayVault/
@@ -190,7 +190,7 @@ PayVault/
 
 ---
 
-## 📊 Payment Data Models
+## Payment Data Models
 
 ### User Schema (`backend/models/User.js`)
 - `username`: String (required, trimmed)
@@ -212,9 +212,9 @@ PayVault/
 
 ---
 
-## 📡 REST API Documentation
+##  REST API Documentation
 
-### 🔐 Authentication (`/api/auth`)
+### Authentication (`/api/auth`)
 | Method | Endpoint | Access | Description |
 |---|---|---|---|
 | `POST` | `/api/auth/register` | Public | Register a new user account |
@@ -222,7 +222,7 @@ PayVault/
 | `POST` | `/api/auth/google` | Public | Authenticate / auto-register via Google identity; returns JWT |
 | `GET` | `/api/auth/me` | Authenticated | Fetch authenticated user details and payment stats |
 
-### 💳 Payment Management (`/api/payments`)
+### Payment Management (`/api/payments`)
 *Requires `Authorization: Bearer <token>`. IDOR checks enforce that users can only access their own records.*
 | Method | Endpoint | Access | Description |
 |---|---|---|---|
@@ -232,7 +232,7 @@ PayVault/
 | `PUT` | `/api/payments/:id` | Authenticated | Update a payment method (prunes obsolete fields on type change) |
 | `DELETE`| `/api/payments/:id` | Authenticated | Delete a payment method |
 
-### 👑 Administrator (`/api/admin`)
+### Administrator (`/api/admin`)
 *Requires `Authorization: Bearer <token>` and `role: 'admin'`.*
 | Method | Endpoint | Access | Description |
 |---|---|---|---|
@@ -242,7 +242,7 @@ PayVault/
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 ### Backend (`backend/.env`)
 ```env
@@ -260,7 +260,7 @@ VITE_API_URL=http://localhost:5000/api
 
 ---
 
-## 🚀 Installation & Running Locally
+##  Installation & Running Locally
 
 ### 1. Prerequisites
 - [Node.js](https://nodejs.org/) (v18 or higher)
@@ -292,7 +292,7 @@ Open `http://localhost:5173` in your browser to start using PayVault.
 
 ---
 
-## 👑 Admin Setup & Seeding
+##  Admin Setup & Seeding
 
 The database includes an automated seeding script that provisions the administrator account and demo accounts with realistic portfolios:
 
@@ -308,7 +308,7 @@ This creates:
 
 ---
 
-## 🔒 Security Architecture
+##  Security Architecture
 
 1. **IDOR Prevention**: Document ownership is verified on all read, update, and delete routes (`payment.user.toString() === req.user._id.toString()`). Cross-user access is rejected with HTTP 403.
 2. **Strict Field Isolation**: Switching between payment channels purges previous fields at both the application level and MongoDB level (`$unset`), preventing sensitive data leakage.
@@ -318,66 +318,7 @@ This creates:
 
 ---
 
-## 🧪 Automated Testing
-
-PayVault includes 25 integration tests covering authentication, format validation for all 5 payment types, IDOR authorization protections, and administrative features.
-
-To run the test suite:
-```bash
-cd backend
-npm test
-```
-
-### Verified Test Results
-```text
-PASS tests/api.test.js
-  PayVault API Test Suite
-    1. Authentication & Authorization
-      ✓ should reject duplicate email registration
-      ✓ should reject registration with invalid email
-      ✓ should reject registration with short password
-      ✓ should login successfully with correct credentials
-      ✓ should reject login with wrong password
-      ✓ should fetch logged-in user profile via /api/auth/me
-      ✓ should reject unauthenticated request without token
-    2. Payment Validation & Creation
-      ✓ should add a Bank payment with valid fields
-      ✓ should reject Bank payment with invalid IFSC code
-      ✓ should add a UPI payment with valid upiId
-      ✓ should reject UPI payment with invalid format
-      ✓ should add a Paytm payment with valid phone
-      ✓ should add a PayPal payment with valid email
-      ✓ should add a USDT payment with valid wallet address
-    3. Payment Retrieval, Update & Type Changing
-      ✓ should list only logged-in user payments
-      ✓ should get a single payment by ID
-      ✓ should update payment details and purge obsolete fields when type changes
-    4. IDOR / Authorization Security
-      ✓ should prevent User B from reading User A payment (IDOR protection)
-      ✓ should prevent User B from updating User A payment
-      ✓ should prevent User B from deleting User A payment
-      ✓ should allow User A to delete their own payment
-    5. Admin Authorization & Features
-      ✓ should reject normal user from accessing admin endpoints (403 Forbidden)
-      ✓ should allow admin to view all users
-      ✓ should allow admin to view payments with pagination and search
-      ✓ should allow admin to get stats breakdown
-
-Test Suites: 1 passed, 1 total
-Tests:       25 passed, 25 total
-```
-
----
-
-## 🌐 Production Deployment
+##  Production Deployment
 
 - **Frontend**: Run `npm run build` inside `frontend/` to generate the production bundle in `dist/`. Ready for deployment on Vercel, Netlify, or AWS S3/CloudFront. Set `VITE_API_URL` to your production backend URL.
 - **Backend**: Standard Express entry point `server.js` listening on `process.env.PORT`. Deployable to Render, Railway, AWS ECS, or Fly.io. Configure `CLIENT_URL` to your production frontend domain.
-
----
-
-## 🔮 Future Improvements
-
-- **Two-Factor Authentication (2FA)**: Time-based One-Time Password (TOTP) integration for sensitive actions (e.g. updating bank account numbers).
-- **Export Payment Portfolios**: Download payment details as a secured, password-protected PDF or encrypted JSON backup.
-- **Activity Log & Audit Trail**: Real-time logging of changes to payment methods with timestamp and IP location.
