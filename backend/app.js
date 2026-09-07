@@ -14,21 +14,45 @@ const app = express();
 app.use(helmet());
 
 // CORS configuration
-const allowedOrigins = [
-  process.env.CLIENT_URL || 'http://localhost:5173',
-  'http://localhost:3000',
-  'http://127.0.0.1:5173',
-];
+const configuredClientUrls = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map((u) => u.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
-        callback(null, true);
+      // Allow requests with no origin (e.g. mobile apps, curl, health probes)
+      if (!origin) return callback(null, true);
+
+      const cleanOrigin = origin.replace(/\/+$/, '');
+
+      // Allow localhost / 127.0.0.1 on any port (5173, 5174, 3000, etc.)
+      const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(cleanOrigin);
+
+      // Allow any Vercel deployment (*.vercel.app) or Render service (*.onrender.com)
+      const isVercelOrRender = /^https:\/\/[a-zA-Z0-9-_.]+\.(vercel\.app|onrender\.com)$/.test(cleanOrigin);
+
+      // Allow explicitly configured CLIENT_URL(s)
+      const isConfigured =
+        configuredClientUrls.includes('*') ||
+        configuredClientUrls.includes(cleanOrigin);
+
+      if (
+        process.env.NODE_ENV !== 'production' ||
+        isLocalhost ||
+        isVercelOrRender ||
+        isConfigured ||
+        configuredClientUrls.length === 0
+      ) {
+        callback(null, origin);
       } else {
-        callback(new Error('CORS policy: Not allowed by CORS'));
+        callback(new Error(`CORS policy: Origin ${origin} not allowed`));
       }
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   })
 );
 
@@ -48,6 +72,17 @@ const authLimiter = rateLimit({
 // Body parsers
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+// Root Status API
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    name: 'PayVault API',
+    message: 'PayVault Multi-Payment Management System API is operational',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+  });
+});
 
 // Health Check API
 app.get('/api/health', (req, res) => {
