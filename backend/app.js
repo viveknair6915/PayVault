@@ -98,6 +98,11 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Compatibility aliases (in case VITE_API_URL was configured without the '/api' suffix)
+app.use('/auth', authLimiter, authRoutes);
+app.use('/payments', paymentRoutes);
+app.use('/admin', adminRoutes);
+
 // 404 Route Handler
 app.use((req, res) => {
   res.status(404).json({
