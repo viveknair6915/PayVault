@@ -8,7 +8,7 @@ PayVault is a secure, production-grade, mobile-first payment information managem
 
 ### 1. Authentication & Google Sign-In
 ![1. Authentication & Google Sign-In](./Screenshots/image1.png)
-> **Step 1 — Login Screen**: Features 1-Click **Continue with Google** authentication, quick evaluation demo account selectors (**Vivek Nair**, **Admin**, **Rahul Sharma**), password sign-in, and 256-bit encryption trust badges.
+> **Step 1 — Login Screen**: Features verified Google Identity Services sign-in when configured, quick evaluation demo account selectors (**Vivek Nair**, **Admin**, **Rahul Sharma**), and password sign-in.
 
 ---
 
@@ -40,7 +40,7 @@ PayVault is a secure, production-grade, mobile-first payment information managem
 
 ###  Authentication & Authorization
 - **User Registration & Login**: Validated email and password creation with bcrypt 10-round hashing.
-- **Google OAuth Sign-In**: 1-click Google authentication with account chooser modal and JWT issuance.
+- **Google Sign-In**: Optional Google Identity Services sign-in. The backend verifies the Google ID token before issuing a PayVault JWT.
 - **JWT Authentication**: Secure 7-day signed bearer tokens verified on protected API routes.
 - **Role-Based Access Control (RBAC)**: Strict role separation between standard `user` and `admin` roles.
 - **IDOR Protection**: Database queries strictly bound to `user: req.user._id`, preventing cross-user data tampering.
@@ -48,7 +48,7 @@ PayVault is a secure, production-grade, mobile-first payment information managem
 ###  User Capabilities
 - **Multi-Payment Management**: Save multiple accounts across 5 supported payment channels.
 - **Dynamic Input Isolation**: Clean, focused forms rendering only the inputs required for the selected payment type.
-- **Data Masking & Privacy**: Account numbers, wallet addresses, and mobile numbers masked by default (`•••• •••• •••• 6735`) with instant reveal/hide toggle.
+- **Data Masking & Privacy**: Sensitive identifiers are encrypted with AES-256-GCM at rest and masked by default in the UI.
 - **1-Touch Clipboard Copy**: Instant copy button `[📋]` next to financial identifiers with animated toast confirmation.
 - **Complete CRUD Operations**: Create, read, update, and safely delete payment methods with confirmation dialogs.
 - **Profile Hub**: View account verification status, total saved methods, and session controls.
@@ -82,15 +82,15 @@ The login screen includes **1-Click quick fill buttons** to evaluate each person
 | ** Admin User** | `admin@payvault.com` | `Admin@12345` | Global oversight, metrics, search/filter all payments |
 | ** Vivek Nair** | `demo@payvault.com` | `User@12345` | Complete portfolio (Bank, UPI, Paytm, PayPal, USDT) |
 | ** Rahul Sharma** | `rahul@payvault.com` | `User@12345` | ICICI Bank Account & Google Pay UPI ID |
-| ** Google Sign-In** | Any Google ID | *Passwordless* | Auto-provisions and securely authenticates with JWT |
+| ** Google Sign-In** | Configured Google account | *Passwordless* | Requires a verified Google ID token and `GOOGLE_CLIENT_ID` |
 
 ---
 
 ##  Tech Stack
 
 ### Frontend
-- **Framework**: React 18 / 19 (Vite)
-- **Routing**: React Router DOM v6
+- **Framework**: React 19 (Vite)
+- **Routing**: React Router DOM v7
 - **Styling**: Pure Vanilla CSS & CSS Variables (No Tailwind CSS, No Next.js)
 - **HTTP Client**: Axios with JWT request interceptors and 401 response handling
 - **Icons**: Lucide React
@@ -99,7 +99,7 @@ The login screen includes **1-Click quick fill buttons** to evaluate each person
 - **Runtime**: Node.js & Express.js
 - **Database**: MongoDB with Mongoose ODM
 - **Security**: bcryptjs (10 rounds), jsonwebtoken (JWT), Helmet, CORS, express-rate-limit
-- **Testing**: Jest & Supertest (Automated Integration Suite)
+- **Testing**: Jest & Supertest (27 automated integration tests)
 
 ---
 
@@ -112,7 +112,7 @@ PayVault/
 │   │   └── db.js                 # MongoDB connection logic
 │   ├── controllers/
 │   │   ├── adminController.js     # Admin metrics, users list, search & filter
-│   │   ├── authController.js      # Register, login, getMe, Google OAuth
+│   │   ├── authController.js      # Register, login, getMe, verified Google sign-in
 │   │   └── paymentController.js   # Payment CRUD with strict field isolation
 │   ├── middleware/
 │   │   ├── auth.js                # JWT verification middleware
@@ -126,9 +126,12 @@ PayVault/
 │   │   ├── authRoutes.js          # /api/auth endpoints
 │   │   └── paymentRoutes.js       # /api/payments endpoints
 │   ├── scripts/
+│   │   ├── encryptPayments.js     # Existing plaintext-payment migration
 │   │   └── seed.js                # Database seeding script for admin & demo users
 │   ├── tests/
-│   │   └── api.test.js            # 25 automated API integration tests
+│   │   └── api.test.js            # API integration tests
+│   ├── utils/
+│   │   └── paymentCrypto.js       # AES-256-GCM encryption and blind indexes
 │   ├── validators/
 │   │   └── paymentValidator.js    # Regex and format validators per payment channel
 │   ├── app.js                     # Express app setup, rate-limiting & middleware
@@ -157,13 +160,13 @@ PayVault/
 │   │   │   ├── AdminPayments.jsx  # Admin searchable/paginated payment directory
 │   │   │   ├── Dashboard.jsx      # User profile & overview
 │   │   │   ├── EditPayment.jsx    # Edit payment channel page
-│   │   │   ├── Login.jsx          # Login screen with Google Auth & demo pills
+│   │   │   ├── Login.jsx          # Login screen with verified Google sign-in & demo pills
 │   │   │   ├── Payments.jsx       # Manage Payments portfolio page
 │   │   │   └── Register.jsx       # User registration page
 │   │   ├── services/
 │   │   │   ├── adminService.js    # Admin API calls
 │   │   │   ├── api.js             # Axios base instance with interceptors
-│   │   │   ├── authService.js     # Auth API calls with Google fallback
+│   │   │   ├── authService.js     # Auth API calls
 │   │   │   └── paymentService.js  # Payment CRUD API calls
 │   │   ├── styles/
 │   │   │   ├── App.css            # Layout, containers, and responsive rules
@@ -219,7 +222,7 @@ PayVault/
 |---|---|---|---|
 | `POST` | `/api/auth/register` | Public | Register a new user account |
 | `POST` | `/api/auth/login` | Public | Authenticate with email & password; returns JWT |
-| `POST` | `/api/auth/google` | Public | Authenticate / auto-register via Google identity; returns JWT |
+| `POST` | `/api/auth/google` | Public | Verify a Google ID token and authenticate/auto-register; returns JWT |
 | `GET` | `/api/auth/me` | Authenticated | Fetch authenticated user details and payment stats |
 
 ### Payment Management (`/api/payments`)
@@ -249,6 +252,8 @@ PayVault/
 PORT=5000
 MONGODB_URI=mongodb://127.0.0.1:27017/payvault
 JWT_SECRET=your_jwt_secret_key_here
+PAYMENT_ENCRYPTION_KEY=64_character_hex_key
+GOOGLE_CLIENT_ID=your_google_oauth_web_client_id
 CLIENT_URL=http://localhost:5173
 NODE_ENV=development
 ```
@@ -256,6 +261,7 @@ NODE_ENV=development
 ### Frontend (`frontend/.env`)
 ```env
 VITE_API_URL=http://localhost:5000/api
+VITE_GOOGLE_CLIENT_ID=your_google_oauth_web_client_id
 ```
 
 ---
@@ -277,7 +283,7 @@ cd PayVault
 ```bash
 cd backend
 npm install
-npm run seed:admin   # Seeds Admin & demo users with pre-configured payment portfolios
+npm run seed:admin   # Optional: seeds the admin and demo users
 npm run dev          # Starts Express server on http://localhost:5000
 ```
 
@@ -287,6 +293,8 @@ cd ../frontend
 npm install
 npm run dev          # Starts Vite client on http://localhost:5173
 ```
+
+Before starting either service, copy the matching `.env.example` to `.env` and set the required values. For Google sign-in, use the same Google OAuth Web Client ID for `GOOGLE_CLIENT_ID` in the backend and `VITE_GOOGLE_CLIENT_ID` in the frontend. `VITE_*` values are public and are embedded into the browser bundle; keep backend secrets private.
 
 Open `http://localhost:5173` in your browser to start using PayVault.
 
@@ -306,6 +314,8 @@ This creates:
 - **Vivek Nair**: `demo@payvault.com` / `User@12345` (5 payment methods across all types)
 - **Rahul Sharma**: `rahul@payvault.com` / `User@12345` (Bank & UPI methods)
 
+These are local/demo seed credentials only. Change or override them for any shared environment using `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_USERNAME`.
+
 ---
 
 ##  Security Architecture
@@ -314,11 +324,7 @@ This creates:
 2. **Strict Field Isolation**: Switching between payment channels purges previous fields at both the application level and MongoDB level (`$unset`), preventing sensitive data leakage.
 3. **Sensitive Field Masking**: Financial identifiers (bank account numbers, UPI IDs, Paytm numbers, crypto addresses) are masked by default (`••••••••6735`) in the UI, requiring explicit user action to reveal.
 4. **Password Protection**: Bcrypt with 10 salt rounds. Plaintext passwords are never stored. Schema-level transforms exclude passwords from all query returns.
-5. **HTTP Headers & Rate Limiting**: Powered by `helmet` to set secure HTTP headers (X-Frame-Options, CSP, etc.) and `express-rate-limit` to prevent brute-force attacks on authentication routes.
+5. **Payment Encryption**: Payment identifiers are encrypted with AES-256-GCM using `PAYMENT_ENCRYPTION_KEY`; blind indexes support exact admin searches without storing searchable plaintext.
+6. **HTTP Headers & Rate Limiting**: Powered by `helmet` to set secure HTTP headers (X-Frame-Options, CSP, etc.) and `express-rate-limit` to prevent brute-force attacks on authentication routes.
 
----
-
-##  Production Deployment
-
-- **Frontend**: Run `npm run build` inside `frontend/` to generate the production bundle in `dist/`. Ready for deployment on Vercel, Netlify, or AWS S3/CloudFront. Set `VITE_API_URL` to your production backend URL.
-- **Backend**: Standard Express entry point `server.js` listening on `process.env.PORT`. Deployable to Render, Railway, AWS ECS, or Fly.io. Configure `CLIENT_URL` to your production frontend domain.
+Run `npm run encrypt:payments` once when upgrading an existing database from plaintext payment records. For records encrypted with a previous key, set `PAYMENT_ENCRYPTION_OLD_KEY` for the migration command so they can be re-encrypted with the current `PAYMENT_ENCRYPTION_KEY`. Store all keys and database credentials only in deployment secrets.

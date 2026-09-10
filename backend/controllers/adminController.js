@@ -1,5 +1,8 @@
 const User = require('../models/User');
 const Payment = require('../models/Payment');
+const { blindIndex } = require('../utils/paymentCrypto');
+
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // @desc    Get all users with their payment counts
 // @route   GET /api/admin/users
@@ -79,28 +82,29 @@ const getAllPayments = async (req, res, next) => {
 
     // Specific field filters
     if (bankName) {
-      filterConditions.push({ bankName: { $regex: bankName, $options: 'i' } });
+      filterConditions.push({ bankName: { $regex: escapeRegex(bankName), $options: 'i' } });
     }
     if (ifscCode) {
-      filterConditions.push({ ifscCode: { $regex: ifscCode, $options: 'i' } });
+      filterConditions.push({ ifscCode: { $regex: escapeRegex(ifscCode), $options: 'i' } });
     }
     if (paytmNumber) {
-      filterConditions.push({ paytmNumber: { $regex: paytmNumber, $options: 'i' } });
+      filterConditions.push({ paytmNumberIndex: blindIndex(paytmNumber.trim()) });
     }
     if (upiId) {
-      filterConditions.push({ upiId: { $regex: upiId, $options: 'i' } });
+      filterConditions.push({ upiIdIndex: blindIndex(upiId.trim()) });
     }
     if (paypalEmail) {
-      filterConditions.push({ paypalEmail: { $regex: paypalEmail, $options: 'i' } });
+      filterConditions.push({ paypalEmailIndex: blindIndex(paypalEmail.trim()) });
     }
     if (usdtAddress) {
-      filterConditions.push({ usdtAddress: { $regex: usdtAddress, $options: 'i' } });
+      filterConditions.push({ usdtAddressIndex: blindIndex(usdtAddress.trim()) });
     }
 
     // Comprehensive global search
     if (search && search.trim()) {
-      const searchTerm = search.trim();
+      const searchTerm = escapeRegex(search.trim());
       const searchRegex = { $regex: searchTerm, $options: 'i' };
+      const exactSearchIndex = blindIndex(search.trim());
 
       // Find user IDs that match username or email
       const matchingUsers = await User.find({
@@ -116,11 +120,11 @@ const getAllPayments = async (req, res, next) => {
           { branchName: searchRegex },
           { accountHolderName: searchRegex },
           { ifscCode: searchRegex },
-          { accountNumber: searchRegex },
-          { paytmNumber: searchRegex },
-          { upiId: searchRegex },
-          { paypalEmail: searchRegex },
-          { usdtAddress: searchRegex },
+          { accountNumberIndex: exactSearchIndex },
+          { paytmNumberIndex: exactSearchIndex },
+          { upiIdIndex: exactSearchIndex },
+          { paypalEmailIndex: exactSearchIndex },
+          { usdtAddressIndex: exactSearchIndex },
         ],
       });
     }

@@ -114,10 +114,8 @@ const seedData = async () => {
 
     console.log('\n===========================================');
     console.log('🎉 Database seeding completed successfully!');
-    console.log('Demo Credentials for evaluation:');
-    console.log(`👑 Admin User  : ${adminEmail} / ${adminPassword}`);
-    console.log(`👤 Vivek Nair : demo@payvault.com / User@12345 (5 Methods)`);
-    console.log(`👤 Rahul Sharma: rahul@payvault.com / User@12345 (Bank & UPI)`);
+    console.log(`Admin account ready: ${adminEmail}`);
+    console.log('Demo users ready: demo@payvault.com and rahul@payvault.com');
     console.log('===========================================\n');
 
     process.exit(0);

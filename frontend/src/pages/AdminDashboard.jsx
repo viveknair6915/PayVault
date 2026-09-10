@@ -38,7 +38,7 @@ const AdminDashboard = () => {
     };
 
     loadDashboardData();
-  }, []);
+  }, [error]);
 
   if (loading) {
     return <LoadingSpinner text="Loading admin analytics..." size={32} />;

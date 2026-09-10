@@ -1,5 +1,19 @@
 const Payment = require('../models/Payment');
 const { validatePaymentInput } = require('../validators/paymentValidator');
+const { encrypt, blindIndex } = require('../utils/paymentCrypto');
+
+const protectedFields = ['accountNumber', 'paytmNumber', 'upiId', 'paypalEmail', 'usdtAddress'];
+
+const protectPaymentData = (data) => {
+  const protectedData = { ...data };
+  protectedFields.forEach((field) => {
+    if (protectedData[field] !== undefined) {
+      protectedData[`${field}Index`] = blindIndex(protectedData[field]);
+      protectedData[field] = encrypt(protectedData[field]);
+    }
+  });
+  return protectedData;
+};
 
 // @desc    Add a new payment method
 // @route   POST /api/payments
@@ -18,7 +32,7 @@ const createPayment = async (req, res, next) => {
 
     const payment = new Payment({
       user: req.user._id,
-      ...cleanData,
+      ...protectPaymentData(cleanData),
     });
 
     const savedPayment = await payment.save();
@@ -128,11 +142,17 @@ const updatePayment = async (req, res, next) => {
     existingPayment.upiId = undefined;
     existingPayment.paypalEmail = undefined;
     existingPayment.usdtAddress = undefined;
+    existingPayment.accountNumberIndex = undefined;
+    existingPayment.paytmNumberIndex = undefined;
+    existingPayment.upiIdIndex = undefined;
+    existingPayment.paypalEmailIndex = undefined;
+    existingPayment.usdtAddressIndex = undefined;
 
     // Apply the clean data according to the selected type
     existingPayment.paymentType = cleanData.paymentType;
-    Object.keys(cleanData).forEach((key) => {
-      existingPayment[key] = cleanData[key];
+    const protectedData = protectPaymentData(cleanData);
+    Object.keys(protectedData).forEach((key) => {
+      existingPayment[key] = protectedData[key];
     });
 
     const updatedPayment = await existingPayment.save();

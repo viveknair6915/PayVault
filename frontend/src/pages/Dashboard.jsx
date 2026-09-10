@@ -30,14 +30,14 @@ const Dashboard = () => {
         if (res.success) {
           setPaymentCount(res.count);
         }
-      } catch (err) {
-        console.warn('Dashboard stats error:', err);
+      } catch {
+        // Keep the profile shell available if the payment summary request fails.
       } finally {
         setLoading(false);
       }
     };
     loadStats();
-  }, []);
+  }, [refreshUser]);
 
   const handleLogout = () => {
     logout();

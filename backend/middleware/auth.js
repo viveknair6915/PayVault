@@ -19,7 +19,14 @@ const authenticateUser = async (req, res, next) => {
       });
     }
 
-    const secret = process.env.JWT_SECRET || 'supersecret_payvault_jwt_key_2026_secure';
+    if (!process.env.JWT_SECRET && process.env.NODE_ENV !== 'test') {
+      return res.status(500).json({
+        success: false,
+        message: 'Server authentication is not configured.',
+      });
+    }
+
+    const secret = process.env.JWT_SECRET || 'payvault-test-only-secret';
     let decoded;
     try {
       decoded = jwt.verify(token, secret);

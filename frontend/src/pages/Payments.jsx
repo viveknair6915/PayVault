@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, CreditCard } from 'lucide-react';
 import { fetchPayments, deletePayment } from '../services/paymentService';
@@ -20,7 +20,7 @@ const Payments = () => {
   const [paymentToDelete, setPaymentToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const loadPayments = async (tab = selectedTab) => {
+  const loadPayments = useCallback(async (tab = selectedTab) => {
     setLoading(true);
     try {
       const res = await fetchPayments(tab);
@@ -32,11 +32,11 @@ const Payments = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [error, selectedTab]);
 
   useEffect(() => {
     loadPayments(selectedTab);
-  }, [selectedTab]);
+  }, [loadPayments, selectedTab]);
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);

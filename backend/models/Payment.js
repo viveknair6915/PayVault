@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { decrypt } = require('../utils/paymentCrypto');
 
 const paymentSchema = new mongoose.Schema(
   {
@@ -54,7 +55,6 @@ const paymentSchema = new mongoose.Schema(
     upiId: {
       type: String,
       trim: true,
-      lowercase: true,
       index: true,
     },
 
@@ -62,7 +62,6 @@ const paymentSchema = new mongoose.Schema(
     paypalEmail: {
       type: String,
       trim: true,
-      lowercase: true,
       index: true,
     },
 
@@ -72,12 +71,23 @@ const paymentSchema = new mongoose.Schema(
       trim: true,
       index: true,
     },
+
+    accountNumberIndex: { type: String, select: false },
+    paytmNumberIndex: { type: String, select: false },
+    upiIdIndex: { type: String, select: false },
+    paypalEmailIndex: { type: String, select: false },
+    usdtAddressIndex: { type: String, select: false },
   },
   {
     timestamps: true,
     toJSON: {
       transform(doc, ret) {
         delete ret.__v;
+        ret.accountNumber = decrypt(ret.accountNumber);
+        ret.paytmNumber = decrypt(ret.paytmNumber);
+        ret.upiId = decrypt(ret.upiId);
+        ret.paypalEmail = decrypt(ret.paypalEmail);
+        ret.usdtAddress = decrypt(ret.usdtAddress);
         return ret;
       },
     },

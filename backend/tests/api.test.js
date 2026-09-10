@@ -125,6 +125,15 @@ describe('PayVault API Test Suite', () => {
       const res = await request(app).get('/api/auth/me');
       expect(res.statusCode).toBe(401);
     });
+
+    it('should reject Google sign-in without a verified ID token', async () => {
+      const res = await request(app).post('/api/auth/google').send({
+        email: 'attacker@example.com',
+        username: 'Attacker',
+      });
+      expect(res.statusCode).toBe(400);
+      expect(res.body.success).toBe(false);
+    });
   });
 
   describe('2. Payment Validation & Creation', () => {
@@ -324,6 +333,23 @@ describe('PayVault API Test Suite', () => {
       expect(res.statusCode).toBe(200);
       expect(res.body.stats.totalUsers).toBeDefined();
       expect(res.body.stats.breakdown).toBeDefined();
+    });
+
+    it('should reject an unconfigured production CORS origin', async () => {
+      const originalNodeEnv = process.env.NODE_ENV;
+      const originalClientUrl = process.env.CLIENT_URL;
+      process.env.NODE_ENV = 'production';
+      process.env.CLIENT_URL = 'https://payvault.example.com';
+
+      const res = await request(app)
+        .get('/api/health')
+        .set('Origin', 'https://evil.example.com');
+
+      process.env.NODE_ENV = originalNodeEnv;
+      process.env.CLIENT_URL = originalClientUrl;
+
+      expect(res.statusCode).toBe(500);
+      expect(res.body.message).toContain('CORS policy');
     });
   });
 });

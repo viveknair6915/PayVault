@@ -10,6 +10,14 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
+if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('JWT_SECRET must be configured in production.');
+}
+
+if (!process.env.PAYMENT_ENCRYPTION_KEY && process.env.NODE_ENV === 'production') {
+  throw new Error('PAYMENT_ENCRYPTION_KEY must be configured in production.');
+}
+
 // Security Middleware
 app.use(helmet());
 
@@ -27,24 +35,10 @@ app.use(
 
       const cleanOrigin = origin.replace(/\/+$/, '');
 
-      // Allow localhost / 127.0.0.1 on any port (5173, 5174, 3000, etc.)
-      const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(cleanOrigin);
-
-      // Allow any Vercel deployment (*.vercel.app) or Render service (*.onrender.com)
-      const isVercelOrRender = /^https:\/\/[a-zA-Z0-9-_.]+\.(vercel\.app|onrender\.com)$/.test(cleanOrigin);
-
       // Allow explicitly configured CLIENT_URL(s)
-      const isConfigured =
-        configuredClientUrls.includes('*') ||
-        configuredClientUrls.includes(cleanOrigin);
+      const isConfigured = configuredClientUrls.includes(cleanOrigin);
 
-      if (
-        process.env.NODE_ENV !== 'production' ||
-        isLocalhost ||
-        isVercelOrRender ||
-        isConfigured ||
-        configuredClientUrls.length === 0
-      ) {
+      if (isConfigured) {
         callback(null, origin);
       } else {
         callback(new Error(`CORS policy: Origin ${origin} not allowed`));

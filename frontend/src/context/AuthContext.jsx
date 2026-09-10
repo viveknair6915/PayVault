@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { loginUser, registerUser, googleLoginUser, fetchCurrentUser } from '../services/authService';
 
 const AuthContext = createContext(null);
@@ -7,6 +7,24 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(() => localStorage.getItem('payvault_token'));
   const [loading, setLoading] = useState(true);
+
+  const logout = useCallback(() => {
+    localStorage.removeItem('payvault_token');
+    localStorage.removeItem('payvault_user');
+    setToken(null);
+    setUser(null);
+  }, []);
+
+  const refreshUser = useCallback(async () => {
+    try {
+      const res = await fetchCurrentUser();
+      if (res.success && res.user) {
+        setUser(res.user);
+      }
+    } catch {
+      // The interceptor handles expired sessions; keep the current UI stable for transient failures.
+    }
+  }, []);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -28,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     initAuth();
-  }, []);
+  }, [logout]);
 
   const login = async (email, password) => {
     const res = await loginUser({ email, password });
@@ -64,24 +82,6 @@ export const AuthProvider = ({ children }) => {
       return res;
     }
     throw new Error(res.message || 'Google login failed');
-  };
-
-  const logout = () => {
-    localStorage.removeItem('payvault_token');
-    localStorage.removeItem('payvault_user');
-    setToken(null);
-    setUser(null);
-  };
-
-  const refreshUser = async () => {
-    try {
-      const res = await fetchCurrentUser();
-      if (res.success && res.user) {
-        setUser(res.user);
-      }
-    } catch (err) {
-      console.warn('Refresh user error:', err.message);
-    }
   };
 
   return (

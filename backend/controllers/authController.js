@@ -1,11 +1,21 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
 const Payment = require('../models/Payment');
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+const getJwtSecret = () => {
+  if (process.env.JWT_SECRET) return process.env.JWT_SECRET;
+  if (process.env.NODE_ENV === 'test') return 'payvault-test-only-secret';
+  throw new Error('JWT_SECRET is not configured.');
+};
 
 const generateToken = (user) => {
   return jwt.sign(
     { id: user._id, role: user.role },
-    process.env.JWT_SECRET || 'supersecret_payvault_jwt_key_2026_secure',
+    getJwtSecret(),
     { expiresIn: '7d' }
   );
 };
@@ -150,27 +160,38 @@ const getMe = async (req, res, next) => {
   }
 };
 
-// @desc    Google OAuth login / signup
+// @desc    Verified Google Identity Services login / signup
 // @route   POST /api/auth/google
 // @access  Public
 const googleAuth = async (req, res, next) => {
   try {
-    const { email, username } = req.body;
-
-    if (!email || !email.trim()) {
+    const { credential } = req.body;
+    if (!credential || !process.env.GOOGLE_CLIENT_ID) {
       return res.status(400).json({
         success: false,
-        message: 'Google authentication requires a valid email address.',
+        message: 'Google authentication is not configured or the credential is missing.',
       });
     }
 
-    const cleanEmail = email.trim().toLowerCase();
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    if (!payload || !payload.email || payload.email_verified !== true) {
+      return res.status(401).json({
+        success: false,
+        message: 'Google account email could not be verified.',
+      });
+    }
+
+    const cleanEmail = payload.email.trim().toLowerCase();
     let user = await User.findOne({ email: cleanEmail });
 
     if (!user) {
-      // Create new user account via Google
-      const generatedPassword = 'GAuth_' + Math.random().toString(36).slice(-10) + '!9X';
-      const cleanUsername = username && username.trim() ? username.trim() : cleanEmail.split('@')[0];
+      const generatedPassword = `${crypto.randomBytes(32).toString('hex')}!G`;
+      const cleanUsername = (payload.name || cleanEmail.split('@')[0]).trim().slice(0, 30);
 
       user = await User.create({
         username: cleanUsername,
