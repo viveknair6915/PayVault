@@ -40,9 +40,7 @@ export const AuthProvider = ({ children }) => {
         setUser(res.user);
         await AsyncStorage.setItem('payvault_user', JSON.stringify(res.user));
       }
-    } catch {
-      // Axios interceptor handles expired sessions; maintain UI stability on transient failures
-    }
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -57,7 +55,6 @@ export const AuthProvider = ({ children }) => {
             setUser(JSON.parse(savedUser));
           }
 
-          // Verify with backend
           try {
             const res = await fetchCurrentUser();
             if (res.success && res.user) {

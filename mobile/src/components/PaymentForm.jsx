@@ -97,7 +97,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
 
   return (
     <View style={styles.formCard}>
-      {/* Channel Selector Pills */}
       <Text style={styles.sectionLabel}>Select Payment Type</Text>
       <ScrollView
         horizontal
@@ -125,7 +124,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
         })}
       </ScrollView>
 
-      {/* BANK FIELDS */}
       {paymentType === 'Bank' && (
         <View style={styles.fieldsBlock}>
           <View style={styles.formGroup}>
@@ -211,7 +209,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
         </View>
       )}
 
-      {/* PAYTM FIELDS */}
       {paymentType === 'Paytm' && (
         <View style={styles.fieldsBlock}>
           <View style={styles.formGroup}>
@@ -237,7 +234,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
         </View>
       )}
 
-      {/* UPI FIELDS */}
       {paymentType === 'UPI' && (
         <View style={styles.fieldsBlock}>
           <View style={styles.formGroup}>
@@ -261,7 +257,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
         </View>
       )}
 
-      {/* PAYPAL FIELDS */}
       {paymentType === 'PayPal' && (
         <View style={styles.fieldsBlock}>
           <View style={styles.formGroup}>
@@ -287,7 +282,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
         </View>
       )}
 
-      {/* USDT FIELDS */}
       {paymentType === 'USDT' && (
         <View style={styles.fieldsBlock}>
           <View style={styles.formGroup}>
@@ -312,7 +306,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
         </View>
       )}
 
-      {/* Submit Button */}
       <TouchableOpacity
         onPress={handleSubmit}
         style={[styles.submitBtn, isSubmitting && styles.submitBtnDisabled]}

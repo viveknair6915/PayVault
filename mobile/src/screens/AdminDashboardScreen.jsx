@@ -74,7 +74,6 @@ const AdminDashboardScreen = ({ navigation }) => {
             />
           }
         >
-          {/* Header Block */}
           <View style={styles.topBar}>
             <View style={styles.topBarText}>
               <View style={styles.titleRow}>
@@ -97,7 +96,6 @@ const AdminDashboardScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
 
-          {/* Top 2 Metric Cards */}
           <View style={styles.statsRow}>
             <View style={styles.metricCard}>
               <View style={styles.metricIconWrap}>
@@ -118,7 +116,6 @@ const AdminDashboardScreen = ({ navigation }) => {
             </View>
           </View>
 
-          {/* Payment Types Distribution */}
           <Text style={styles.sectionHeader}>Payment Channel Distribution</Text>
           <View style={styles.channelGrid}>
             <View style={[styles.channelBox, { backgroundColor: colors.channels.Bank.bg, borderColor: colors.channels.Bank.border }]}>
@@ -162,7 +159,6 @@ const AdminDashboardScreen = ({ navigation }) => {
             </View>
           </View>
 
-          {/* Registered Users Directory */}
           <View style={styles.usersHeaderRow}>
             <Text style={styles.sectionHeader}>Users Directory ({users.length})</Text>
             <TouchableOpacity onPress={() => navigation.navigate('AdminPayments')}>

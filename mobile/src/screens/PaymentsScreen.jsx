@@ -27,7 +27,6 @@ const PaymentsScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Deletion modal state
   const [paymentToDelete, setPaymentToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -80,7 +79,6 @@ const PaymentsScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Header />
 
-      {/* Title & Action Bar */}
       <View style={styles.topBar}>
         <View>
           <Text style={styles.screenTitle}>Manage Payments</Text>
@@ -98,7 +96,6 @@ const PaymentsScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      {/* Horizontal Filter Tabs */}
       <View style={styles.filterWrap}>
         <ScrollView
           horizontal
@@ -122,7 +119,6 @@ const PaymentsScreen = ({ navigation }) => {
         </ScrollView>
       </View>
 
-      {/* Content Body */}
       {loading ? (
         <LoadingSpinner text="Fetching payment methods..." />
       ) : payments.length === 0 ? (
@@ -176,7 +172,6 @@ const PaymentsScreen = ({ navigation }) => {
         />
       )}
 
-      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={!!paymentToDelete}
         title="Delete Payment Method"

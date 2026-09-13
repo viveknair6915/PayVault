@@ -8,7 +8,6 @@ const API = axios.create({
   timeout: 15000,
 });
 
-// Request Interceptor: Attach JWT Token if available
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('payvault_token');
@@ -20,12 +19,10 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Handle session expiration or 401s
 API.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // If token expired or invalid, clear local auth
       const currentPath = window.location.pathname;
       if (currentPath !== '/login' && currentPath !== '/register') {
         localStorage.removeItem('payvault_token');

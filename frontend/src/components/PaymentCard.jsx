@@ -59,7 +59,6 @@ const PaymentCard = ({ payment, onDeleteClick }) => {
 
   return (
     <div className="payment-card-ref animate-fade-in">
-      {/* Top Card Title & Masking Toggle */}
       <div className="ref-card-header">
         <div className="ref-card-header-left">
           <span className={`ref-badge-pill ref-badge-${payment.paymentType}`}>
@@ -87,7 +86,6 @@ const PaymentCard = ({ payment, onDeleteClick }) => {
         </button>
       </div>
 
-      {/* Account Information Box (Identical to Screenshot) */}
       <div className="ref-info-box">
         <div className="ref-box-title">Account Information</div>
 
@@ -245,7 +243,6 @@ const PaymentCard = ({ payment, onDeleteClick }) => {
         )}
       </div>
 
-      {/* Screenshot-Style Disclaimer Box */}
       <div className="ref-disclaimer-card">
         <div className="ref-disclaimer-header">
           <AlertTriangle size={15} color="#d97706" />
@@ -263,7 +260,6 @@ const PaymentCard = ({ payment, onDeleteClick }) => {
         </div>
       </div>
 
-      {/* Card Action Buttons (Edit & Delete) */}
       <div className="ref-card-actions">
         <button
           type="button"

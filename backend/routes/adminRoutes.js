@@ -8,7 +8,6 @@ const {
 const { authenticateUser } = require('../middleware/auth');
 const { requireAdmin } = require('../middleware/requireAdmin');
 
-// All admin routes require authentication and admin role
 router.use(authenticateUser, requireAdmin);
 
 router.get('/users', getAllUsers);

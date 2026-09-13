@@ -3,13 +3,11 @@ const errorHandler = (err, req, res, next) => {
   let message = err.message || 'Internal Server Error';
   let errors = err.errors || null;
 
-  // Handle Mongoose malformed ObjectId (CastError)
   if (err.name === 'CastError') {
     statusCode = 400;
     message = `Invalid ID format: ${err.value}`;
   }
 
-  // Handle Mongoose validation errors
   if (err.name === 'ValidationError') {
     statusCode = 400;
     message = 'Validation failed';
@@ -19,7 +17,6 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
-  // Handle MongoDB duplicate key error (code 11000)
   if (err.code === 11000) {
     statusCode = 400;
     const field = Object.keys(err.keyValue || {})[0] || 'field';
@@ -35,7 +32,6 @@ const errorHandler = (err, req, res, next) => {
     response.errors = errors;
   }
 
-  // Only expose stack traces in development if not production
   if (process.env.NODE_ENV === 'test-debug') {
     response.stack = err.stack;
   }

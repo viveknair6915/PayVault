@@ -15,9 +15,6 @@ const protectPaymentData = (data) => {
   return protectedData;
 };
 
-// @desc    Add a new payment method
-// @route   POST /api/payments
-// @access  Private (Authenticated User)
 const createPayment = async (req, res, next) => {
   try {
     const { isValid, errors, cleanData } = validatePaymentInput(req.body);
@@ -47,9 +44,6 @@ const createPayment = async (req, res, next) => {
   }
 };
 
-// @desc    Get all payment methods for logged in user
-// @route   GET /api/payments
-// @access  Private (Authenticated User)
 const getPayments = async (req, res, next) => {
   try {
     const query = { user: req.user._id };
@@ -69,9 +63,6 @@ const getPayments = async (req, res, next) => {
   }
 };
 
-// @desc    Get single payment method by ID
-// @route   GET /api/payments/:id
-// @access  Private (Owner only)
 const getPaymentById = async (req, res, next) => {
   try {
     const payment = await Payment.findById(req.params.id);
@@ -83,7 +74,6 @@ const getPaymentById = async (req, res, next) => {
       });
     }
 
-    // Ownership check (prevent IDOR)
     if (payment.user.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
@@ -100,9 +90,6 @@ const getPaymentById = async (req, res, next) => {
   }
 };
 
-// @desc    Update an existing payment method
-// @route   PUT /api/payments/:id
-// @access  Private (Owner only)
 const updatePayment = async (req, res, next) => {
   try {
     const existingPayment = await Payment.findById(req.params.id);
@@ -114,7 +101,6 @@ const updatePayment = async (req, res, next) => {
       });
     }
 
-    // Ownership check (prevent IDOR)
     if (existingPayment.user.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
@@ -132,7 +118,6 @@ const updatePayment = async (req, res, next) => {
       });
     }
 
-    // Reset all type-specific fields on the document to purge obsolete fields
     existingPayment.ifscCode = undefined;
     existingPayment.branchName = undefined;
     existingPayment.bankName = undefined;
@@ -148,7 +133,6 @@ const updatePayment = async (req, res, next) => {
     existingPayment.paypalEmailIndex = undefined;
     existingPayment.usdtAddressIndex = undefined;
 
-    // Apply the clean data according to the selected type
     existingPayment.paymentType = cleanData.paymentType;
     const protectedData = protectPaymentData(cleanData);
     Object.keys(protectedData).forEach((key) => {
@@ -167,9 +151,6 @@ const updatePayment = async (req, res, next) => {
   }
 };
 
-// @desc    Delete a payment method
-// @route   DELETE /api/payments/:id
-// @access  Private (Owner only)
 const deletePayment = async (req, res, next) => {
   try {
     const payment = await Payment.findById(req.params.id);
@@ -181,7 +162,6 @@ const deletePayment = async (req, res, next) => {
       });
     }
 
-    // Ownership check (prevent IDOR)
     if (payment.user.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,

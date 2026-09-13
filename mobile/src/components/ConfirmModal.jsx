@@ -34,7 +34,6 @@ const ConfirmModal = ({
         <View style={styles.backdrop}>
           <TouchableWithoutFeedback>
             <View style={styles.dialog}>
-              {/* Header */}
               <View style={styles.header}>
                 <View style={styles.headerLeft}>
                   <View style={styles.iconBadge}>
@@ -52,12 +51,10 @@ const ConfirmModal = ({
                 </TouchableOpacity>
               </View>
 
-              {/* Message */}
               <View style={styles.body}>
                 <Text style={styles.messageText}>{message}</Text>
               </View>
 
-              {/* Actions */}
               <View style={styles.actions}>
                 <TouchableOpacity
                   onPress={onCancel}

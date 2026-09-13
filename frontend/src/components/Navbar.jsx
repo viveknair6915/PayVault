@@ -27,7 +27,6 @@ const Navbar = ({ showBack = false }) => {
   return (
     <header className="app-header">
       <div className="header-container">
-        {/* Brand Logo & Name */}
         <div className="header-left">
           {showBack && (
             <button
@@ -51,7 +50,6 @@ const Navbar = ({ showBack = false }) => {
           </Link>
         </div>
 
-        {/* Desktop Navigation Links */}
         {isAuthenticated && (
           <nav className="desktop-nav-links" aria-label="Desktop Navigation">
             <NavLink
@@ -91,11 +89,9 @@ const Navbar = ({ showBack = false }) => {
           </nav>
         )}
 
-        {/* Right Section: TaskPlanet-inspired Status Badges & User Avatar */}
         <div className="header-right">
           {isAuthenticated && user ? (
             <>
-              {/* Reference-inspired points & balance badges */}
               <div className="header-badge-group">
                 <div className="ref-badge ref-badge-points" title="Available Points">
                   <span className="ref-badge-num">50</span>

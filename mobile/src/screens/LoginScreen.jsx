@@ -73,7 +73,6 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  // Server URL configuration for physical device vs emulator
   const [showServerConfig, setShowServerConfig] = useState(false);
   const [serverUrl, setServerUrl] = useState(getBaseUrl());
 
@@ -125,7 +124,6 @@ const LoginScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Top Header */}
         <View style={styles.topHeader}>
           <View style={styles.logoBadge}>
             <ShieldCheck size={36} color="#ffffff" />
@@ -136,7 +134,6 @@ const LoginScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        {/* Quick Demo Accounts Card */}
         <View style={styles.demoCard}>
           <Text style={styles.demoCardTitle}>QUICK DEMO ACCOUNTS FOR EVALUATION</Text>
           <View style={styles.demoGrid}>
@@ -153,9 +150,7 @@ const LoginScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Form Card */}
         <View style={styles.formCard}>
-          {/* Google Sign-In Button */}
           <TouchableOpacity
             onPress={handleGoogleSignIn}
             style={[styles.googleBtn, isGoogleLoading && styles.googleBtnDisabled]}
@@ -172,14 +167,12 @@ const LoginScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
 
-          {/* Divider */}
           <View style={styles.dividerRow}>
             <View style={styles.dividerLine} />
             <Text style={styles.dividerText}>or sign in with password</Text>
             <View style={styles.dividerLine} />
           </View>
 
-          {/* Email Input */}
           <View style={styles.formGroup}>
             <View style={styles.labelRow}>
               <Mail size={14} color={colors.textMuted} />
@@ -196,7 +189,6 @@ const LoginScreen = ({ navigation }) => {
             />
           </View>
 
-          {/* Password Input */}
           <View style={styles.formGroup}>
             <View style={styles.labelRow}>
               <Lock size={14} color={colors.textMuted} />
@@ -225,7 +217,6 @@ const LoginScreen = ({ navigation }) => {
             </View>
           </View>
 
-          {/* Sign In Button */}
           <TouchableOpacity
             onPress={handleSubmit}
             style={[styles.submitBtn, isSubmitting && styles.submitBtnDisabled]}
@@ -242,7 +233,6 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {/* Register Link */}
         <View style={styles.registerRow}>
           <Text style={styles.registerPrompt}>Don't have an account yet? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
@@ -252,7 +242,6 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {/* Security Trust Badges */}
         <View style={styles.trustBox}>
           <View style={styles.trustItem}>
             <LinkIcon size={14} color={colors.primary} />
@@ -268,7 +257,6 @@ const LoginScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Server Config Switcher for Physical Device testing */}
         <TouchableOpacity
           onPress={() => setShowServerConfig(!showServerConfig)}
           style={styles.serverConfigToggle}
@@ -286,7 +274,6 @@ const LoginScreen = ({ navigation }) => {
               Select your network or type your custom server IP below:
             </Text>
 
-            {/* Quick Presets */}
             <View style={[styles.presetRow, { flexWrap: 'wrap' }]}>
               <TouchableOpacity
                 onPress={() => handleSaveServerUrl('https://payvault-kudl.onrender.com/api')}

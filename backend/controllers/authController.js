@@ -20,9 +20,6 @@ const generateToken = (user) => {
   );
 };
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -80,9 +77,6 @@ const register = async (req, res, next) => {
   }
 };
 
-// @desc    Authenticate user & get token
-// @route   POST /api/auth/login
-// @access  Public
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -129,9 +123,6 @@ const login = async (req, res, next) => {
   }
 };
 
-// @desc    Get current logged in user details & payment stats
-// @route   GET /api/auth/me
-// @access  Private
 const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
@@ -160,9 +151,6 @@ const getMe = async (req, res, next) => {
   }
 };
 
-// @desc    Verified Google Identity Services login / signup
-// @route   POST /api/auth/google
-// @access  Public
 const googleAuth = async (req, res, next) => {
   try {
     const { credential } = req.body;

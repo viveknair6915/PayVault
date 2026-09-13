@@ -46,7 +46,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="animate-fade-in">
-      {/* Admin Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -68,7 +67,6 @@ const AdminDashboard = () => {
         </Link>
       </div>
 
-      {/* Top Metrics Cards */}
       <div className="admin-card-grid">
         <div className="admin-stat-card">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)' }}>
@@ -87,7 +85,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Payment Type Distribution Grid */}
       <div style={{ marginBottom: '22px' }}>
         <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '10px', color: 'var(--text-main)' }}>
           Payment Methods Distribution
@@ -135,7 +132,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Users Directory Table */}
       <div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
           <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)' }}>

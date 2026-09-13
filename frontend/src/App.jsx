@@ -19,7 +19,6 @@ import AdminPayments from './pages/AdminPayments';
 import './styles/App.css';
 import './styles/components.css';
 
-// Responsive App Shell
 const AppShell = () => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
@@ -36,7 +35,6 @@ const AppShell = () => {
 
       <main className="app-content">
         <Routes>
-          {/* Public Routes */}
           <Route
             path="/login"
             element={isAuthenticated ? <Navigate to="/payments" replace /> : <Login />}
@@ -46,7 +44,6 @@ const AppShell = () => {
             element={isAuthenticated ? <Navigate to="/payments" replace /> : <Register />}
           />
 
-          {/* User Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/payments" element={<Payments />} />
@@ -54,13 +51,11 @@ const AppShell = () => {
             <Route path="/payments/edit/:id" element={<EditPayment />} />
           </Route>
 
-          {/* Admin Only Protected Routes */}
           <Route element={<AdminRoute />}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/payments" element={<AdminPayments />} />
           </Route>
 
-          {/* Fallback Redirects */}
           <Route
             path="/"
             element={<Navigate to={isAuthenticated ? '/payments' : '/login'} replace />}
@@ -72,7 +67,6 @@ const AppShell = () => {
         </Routes>
       </main>
 
-      {/* Mobile Bottom Navigation (Visible on mobile/tablet screens only) */}
       {isAuthenticated && !isAuthPage && <BottomNav />}
     </div>
   );

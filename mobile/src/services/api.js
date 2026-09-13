@@ -2,12 +2,10 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
-// Default host: Cloud Production on Render (Runs 100% independently without laptop)
 export const DEFAULT_BASE_URL = 'https://payvault-kudl.onrender.com/api';
 
 let customBaseUrl = null;
 
-// Initialize custom URL from persistent storage if previously set
 AsyncStorage.getItem('@payvault_server_url')
   .then((saved) => {
     if (saved && !saved.includes('10.0.2.2')) {
@@ -42,7 +40,6 @@ const API = axios.create({
   timeout: 8000,
 });
 
-// Request Interceptor: Attach JWT Bearer Token from AsyncStorage
 API.interceptors.request.use(
   async (config) => {
     try {
@@ -58,7 +55,6 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Handle session expiration or 401s
 API.interceptors.response.use(
   (response) => response,
   async (error) => {

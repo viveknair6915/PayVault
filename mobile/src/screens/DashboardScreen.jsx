@@ -39,9 +39,7 @@ const DashboardScreen = ({ navigation }) => {
       if (res.success) {
         setPaymentCount(res.count);
       }
-    } catch {
-      // Keep UI steady
-    } finally {
+    } catch {} finally {
       setLoading(false);
       setRefreshing(false);
     }
@@ -92,7 +90,6 @@ const DashboardScreen = ({ navigation }) => {
             />
           }
         >
-          {/* Profile Hero Card */}
           <View style={styles.heroCard}>
             <View style={styles.avatarLarge}>
               <Text style={styles.avatarText}>
@@ -103,7 +100,6 @@ const DashboardScreen = ({ navigation }) => {
             <Text style={styles.userName}>{user?.username || 'User'}</Text>
             <Text style={styles.userEmail}>{user?.email}</Text>
 
-            {/* Badges */}
             <View style={styles.badgesRow}>
               <View style={styles.verifiedBadge}>
                 <CheckCircle2 size={13} color={colors.success} />
@@ -118,7 +114,6 @@ const DashboardScreen = ({ navigation }) => {
               )}
             </View>
 
-            {/* Stats Grid */}
             <View style={styles.statsGrid}>
               <View style={styles.statBox}>
                 <Text style={styles.statNumber}>{paymentCount}</Text>
@@ -134,10 +129,8 @@ const DashboardScreen = ({ navigation }) => {
             </View>
           </View>
 
-          {/* Quick Actions Title */}
           <Text style={styles.sectionHeader}>Quick Actions</Text>
 
-          {/* Action: Manage Payments */}
           <TouchableOpacity
             onPress={() => navigation.navigate('PaymentsTab')}
             style={styles.actionCard}
@@ -152,7 +145,6 @@ const DashboardScreen = ({ navigation }) => {
             <ChevronRight size={18} color={colors.textLight} />
           </TouchableOpacity>
 
-          {/* Action: Add Payment */}
           <TouchableOpacity
             onPress={() => navigation.navigate('AddPaymentTab')}
             style={styles.actionCard}
@@ -167,7 +159,6 @@ const DashboardScreen = ({ navigation }) => {
             <ChevronRight size={18} color={colors.textLight} />
           </TouchableOpacity>
 
-          {/* Action: Admin Center (if admin) */}
           {isAdmin && (
             <TouchableOpacity
               onPress={() => navigation.navigate('AdminTab')}
@@ -184,7 +175,6 @@ const DashboardScreen = ({ navigation }) => {
             </TouchableOpacity>
           )}
 
-          {/* Logout Button */}
           <TouchableOpacity
             onPress={handleLogoutConfirm}
             style={styles.logoutBtn}

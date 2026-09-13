@@ -15,15 +15,12 @@ describe('PayVault API Test Suite', () => {
   let samplePaymentId;
 
   beforeAll(async () => {
-    // Connect to test database
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(TEST_DB_URI);
     }
-    // Clean up test collections
     await User.deleteMany({});
     await Payment.deleteMany({});
 
-    // Create User A
     const resA = await request(app).post('/api/auth/register').send({
       username: 'User Alpha',
       email: 'alpha@test.com',
@@ -32,7 +29,6 @@ describe('PayVault API Test Suite', () => {
     userAToken = resA.body.token;
     userAId = resA.body.user._id;
 
-    // Create User B
     const resB = await request(app).post('/api/auth/register').send({
       username: 'User Beta',
       email: 'beta@test.com',
@@ -41,7 +37,6 @@ describe('PayVault API Test Suite', () => {
     userBToken = resB.body.token;
     userBId = resB.body.user._id;
 
-    // Create Admin User
     const adminUser = await User.create({
       username: 'Admin Test',
       email: 'admintest@payvault.com',
@@ -250,7 +245,6 @@ describe('PayVault API Test Suite', () => {
     });
 
     it('should update payment details and purge obsolete fields when type changes', async () => {
-      // Change from Bank to UPI
       const res = await request(app)
         .put(`/api/payments/${samplePaymentId}`)
         .set('Authorization', `Bearer ${userAToken}`)
