@@ -173,9 +173,14 @@ const googleAuth = async (req, res, next) => {
       });
     }
 
+    const allowedAudiences = [
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_ANDROID_CLIENT_ID,
+    ].filter(Boolean);
+
     const ticket = await googleClient.verifyIdToken({
       idToken: credential,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: allowedAudiences.length === 1 ? allowedAudiences[0] : allowedAudiences,
     });
     const payload = ticket.getPayload();
 
