@@ -65,7 +65,7 @@ mobile/
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### Prerequisites
 1. **Node.js**: v18 or newer
@@ -81,7 +81,7 @@ mobile/
 
 ---
 
-## 💻 Exact Commands to Run the Application
+## Exact Commands to Run the Application
 
 ### Step 1: Ensure the Backend is Running
 The mobile application communicates with the existing backend:
@@ -126,7 +126,7 @@ npm run android
 
 ---
 
-## 🌐 Connecting to the Backend
+## Connecting to the Backend
 
 ### 1. Android Emulator (Default)
 Android Emulators cannot connect to `localhost:5000` because `localhost` refers to the emulator itself.
@@ -148,7 +148,7 @@ When testing on a physical smartphone over Wi-Fi or USB:
 
 ---
 
-## 🔑 Quick Evaluation Credentials
+## Quick Evaluation Credentials
 
 The Login screen includes **1-Tap Quick Demo Account Pills** for rapid evaluation:
 
@@ -160,7 +160,7 @@ The Login screen includes **1-Tap Quick Demo Account Pills** for rapid evaluatio
 
 ---
 
-## 🛡️ Security & Business Logic Preservation
+## Security & Business Logic Preservation
 
 1. **Zero Backend Changes**: The backend API, schemas, encryption, and IDOR validation remain 100% untouched.
 2. **At-Rest Decryption Handled Automatically**: The backend decrypts values and sends them to the authorized user; the mobile app masks digits with `••••••` and provides a 1-tap reveal toggle.
@@ -170,7 +170,7 @@ The Login screen includes **1-Tap Quick Demo Account Pills** for rapid evaluatio
 
 ---
 
-## 📦 Required Dependencies
+## Required Dependencies
 
 - **Navigation**:
   - `@react-navigation/native` (^7.0.14)
@@ -188,7 +188,7 @@ The Login screen includes **1-Tap Quick Demo Account Pills** for rapid evaluatio
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 - **"Network Error" or requests timing out**:
   - Verify that the backend server is running on port 5000 (`npm run dev` in `backend/`).
