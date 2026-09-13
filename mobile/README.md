@@ -6,7 +6,7 @@ This mobile application interfaces seamlessly with the existing, untouched PayVa
 
 ---
 
-## 📱 Mobile Application Architecture
+## Mobile Application Architecture
 
 ```
 mobile/
