@@ -4,14 +4,10 @@ const { blindIndex } = require('../utils/paymentCrypto');
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-// @desc    Get all users with their payment counts
-// @route   GET /api/admin/users
-// @access  Private/Admin
 const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find().select('-password').sort({ createdAt: -1 });
 
-    // Aggregate payment counts per user
     const paymentCounts = await Payment.aggregate([
       {
         $group: {
@@ -53,9 +49,6 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-// @desc    Get all payments with search, filters, and pagination
-// @route   GET /api/admin/payments
-// @access  Private/Admin
 const getAllPayments = async (req, res, next) => {
   try {
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
@@ -75,12 +68,10 @@ const getAllPayments = async (req, res, next) => {
 
     const filterConditions = [];
 
-    // Type filter
     if (paymentType && paymentType !== 'All') {
       filterConditions.push({ paymentType });
     }
 
-    // Specific field filters
     if (bankName) {
       filterConditions.push({ bankName: { $regex: escapeRegex(bankName), $options: 'i' } });
     }
@@ -100,13 +91,11 @@ const getAllPayments = async (req, res, next) => {
       filterConditions.push({ usdtAddressIndex: blindIndex(usdtAddress.trim()) });
     }
 
-    // Comprehensive global search
     if (search && search.trim()) {
       const searchTerm = escapeRegex(search.trim());
       const searchRegex = { $regex: searchTerm, $options: 'i' };
       const exactSearchIndex = blindIndex(search.trim());
 
-      // Find user IDs that match username or email
       const matchingUsers = await User.find({
         $or: [{ username: searchRegex }, { email: searchRegex }],
       }).select('_id');
@@ -153,9 +142,6 @@ const getAllPayments = async (req, res, next) => {
   }
 };
 
-// @desc    Get dashboard metrics / stats
-// @route   GET /api/admin/stats
-// @access  Private/Admin
 const getAdminStats = async (req, res, next) => {
   try {
     const totalUsers = await User.countDocuments({ role: 'user' });

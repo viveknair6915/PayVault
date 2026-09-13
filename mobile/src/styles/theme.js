@@ -1,34 +1,25 @@
-/**
- * PayVault Mobile Design System & Theme Tokens
- * Direct native mapping of web CSS variables from index.css
- */
 
 export const colors = {
-  // Brand colors
   primary: '#2563eb',
   primaryDark: '#1d4ed8',
   primaryLight: '#eff6ff',
   primaryBorder: '#bfdbfe',
 
-  // Backgrounds
   background: '#f4f6fa',
   card: '#ffffff',
   inputBg: '#f8fafc',
   pillBg: '#f1f5f9',
   pillActive: '#2563eb',
 
-  // Typography
   textMain: '#0f172a',
   textMuted: '#64748b',
   textLight: '#94a3b8',
   textInverse: '#ffffff',
 
-  // Borders
   borderSubtle: '#e2e8f0',
   borderCard: '#e5e7eb',
   borderFocus: '#3b82f6',
 
-  // Status Colors
   success: '#10b981',
   successLight: '#ecfdf5',
   successBorder: '#a7f3d0',
@@ -42,7 +33,6 @@ export const colors = {
   warningLight: '#fffbeb',
   warningBorder: '#fde68a',
 
-  // Payment Channel Accent Colors & Backgrounds
   channels: {
     Bank: {
       color: '#2563eb',

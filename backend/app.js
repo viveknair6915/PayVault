@@ -18,10 +18,8 @@ if (!process.env.PAYMENT_ENCRYPTION_KEY && process.env.NODE_ENV === 'production'
   throw new Error('PAYMENT_ENCRYPTION_KEY must be configured in production.');
 }
 
-// Security Middleware
 app.use(helmet());
 
-// CORS configuration
 const configuredClientUrls = (process.env.CLIENT_URL || '')
   .split(',')
   .map((u) => u.trim().replace(/\/+$/, ''))
@@ -30,12 +28,10 @@ const configuredClientUrls = (process.env.CLIENT_URL || '')
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (e.g. mobile apps, curl, health probes)
       if (!origin) return callback(null, true);
 
       const cleanOrigin = origin.replace(/\/+$/, '');
 
-      // Allow explicitly configured CLIENT_URL(s)
       const isConfigured = configuredClientUrls.includes(cleanOrigin);
 
       if (isConfigured) {
@@ -50,10 +46,9 @@ app.use(
   })
 );
 
-// Rate limiting for Auth endpoints to prevent brute force
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -63,11 +58,9 @@ const authLimiter = rateLimit({
   skip: () => process.env.NODE_ENV === 'test',
 });
 
-// Body parsers
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
-// Root Status API
 app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
@@ -78,7 +71,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// Health Check API
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
@@ -87,17 +79,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Compatibility aliases (in case VITE_API_URL was configured without the '/api' suffix)
 app.use('/auth', authLimiter, authRoutes);
 app.use('/payments', paymentRoutes);
 app.use('/admin', adminRoutes);
 
-// 404 Route Handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -105,7 +94,6 @@ app.use((req, res) => {
   });
 });
 
-// Global Central Error Handler
 app.use(errorHandler);
 
 module.exports = app;

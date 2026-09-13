@@ -9,7 +9,6 @@ const {
 } = require('../controllers/paymentController');
 const { authenticateUser } = require('../middleware/auth');
 
-// All payment routes require authentication
 router.use(authenticateUser);
 
 router.route('/')

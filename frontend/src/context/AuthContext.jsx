@@ -21,9 +21,7 @@ export const AuthProvider = ({ children }) => {
       if (res.success && res.user) {
         setUser(res.user);
       }
-    } catch {
-      // The interceptor handles expired sessions; keep the current UI stable for transient failures.
-    }
+    } catch {}
   }, []);
 
   useEffect(() => {

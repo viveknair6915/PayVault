@@ -18,7 +18,6 @@ const paymentSchema = new mongoose.Schema(
       },
       index: true,
     },
-    // Bank specific fields
     ifscCode: {
       type: String,
       trim: true,
@@ -44,28 +43,24 @@ const paymentSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // Paytm specific field
     paytmNumber: {
       type: String,
       trim: true,
       index: true,
     },
 
-    // UPI specific field
     upiId: {
       type: String,
       trim: true,
       index: true,
     },
 
-    // PayPal specific field
     paypalEmail: {
       type: String,
       trim: true,
       index: true,
     },
 
-    // USDT specific field
     usdtAddress: {
       type: String,
       trim: true,
@@ -94,7 +89,6 @@ const paymentSchema = new mongoose.Schema(
   }
 );
 
-// Clean up irrelevant fields strictly before validation & saving
 paymentSchema.pre('validate', function (next) {
   const type = this.paymentType;
 

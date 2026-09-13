@@ -27,13 +27,11 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!isAuthenticated ? (
-        // Auth Stack
         <Stack.Group>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
         </Stack.Group>
       ) : (
-        // Authenticated Stack
         <Stack.Group>
           <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
           <Stack.Screen

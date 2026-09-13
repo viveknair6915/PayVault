@@ -23,13 +23,11 @@ const AdminPayments = () => {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Search & Filter state
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('All');
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ total: 0, pages: 1, limit: 10 });
 
-  // Inspection modal state
   const [inspectPayment, setInspectPayment] = useState(null);
   const [copiedKey, setCopiedKey] = useState(null);
 
@@ -97,7 +95,6 @@ const AdminPayments = () => {
 
   return (
     <div className="animate-fade-in">
-      {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
         <div>
           <h1 className="page-title" style={{ fontSize: '1.35rem' }}>Payment Records Directory</h1>
@@ -111,7 +108,6 @@ const AdminPayments = () => {
         </Link>
       </div>
 
-      {/* Backend Search & Filter Toolbar */}
       <form onSubmit={handleSearchSubmit} className="admin-filter-bar">
         <div className="search-input-wrap">
           <Search size={16} className="search-input-icon" />
@@ -158,7 +154,6 @@ const AdminPayments = () => {
         </div>
       </form>
 
-      {/* Table & Results */}
       {loading ? (
         <LoadingSpinner text="Querying payment records..." size={32} />
       ) : payments.length === 0 ? (
@@ -228,7 +223,6 @@ const AdminPayments = () => {
             </tbody>
           </table>
 
-          {/* Pagination */}
           <div className="pagination-bar">
             <span>
               Showing {payments.length} of {pagination.total} records (Page {pagination.page} of {pagination.pages})
@@ -255,7 +249,6 @@ const AdminPayments = () => {
         </div>
       )}
 
-      {/* Payment Inspection Modal for Admin */}
       {inspectPayment && (
         <div className="modal-backdrop" onClick={() => setInspectPayment(null)}>
           <div className="modal-dialog" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px' }}>

@@ -4,11 +4,11 @@ PayVault is a secure, production-grade, full-stack payment information managemen
 
 ---
 
-## 📱 Application User Flow & Screenshots
+##  Application User Flow & Screenshots
 
 ### 1. Web Authentication & Google Sign-In
 ![1. Authentication & Google Sign-In](./Screenshots/image1.png)
-> **Step 1 — Web Login Screen**: Features verified Google Identity Services sign-in when configured, quick evaluation demo account selectors (**Vivek Nair**, **Admin**, **Rahul Sharma**), and password sign-in.
+> **Step 1 — Web Login Screen**: Features verified Google Identity Services sign-in, quick evaluation demo account selectors (**Vivek Nair**, **Admin**, **Rahul Sharma**), and password authentication.
 
 ---
 
@@ -48,271 +48,98 @@ PayVault is a secure, production-grade, full-stack payment information managemen
 
 ---
 
-## ⚡ Features
+## Features
 
-### 🔐 Authentication & Authorization
-- **User Registration & Login**: Validated email and password creation with bcrypt 10-round hashing.
-- **Native & Web Google Sign-In**: Verified Google Identity Services sign-in on web and native Google Play Services sign-in on Android. The backend verifies the Google ID token audience against configured Client IDs before issuing a PayVault JWT.
-- **JWT Authentication**: Secure 7-day signed bearer tokens verified on protected API routes.
-- **Role-Based Access Control (RBAC)**: Strict role separation between standard `user` and `admin` roles.
-- **IDOR Protection**: Database queries strictly bound to `user: req.user._id`, preventing cross-user data tampering.
-
-### 👤 User Capabilities
-- **Multi-Payment Management**: Save multiple accounts across 5 supported payment channels.
-- **Dynamic Input Isolation**: Clean, focused forms rendering only the inputs required for the selected payment type.
-- **Data Masking & Privacy**: Sensitive identifiers are encrypted with AES-256-GCM at rest and masked by default in the UI.
-- **1-Touch Clipboard Copy**: Instant copy button `[📋]` next to financial identifiers with animated toast confirmation.
-- **Complete CRUD Operations**: Create, read, update, and safely delete payment methods with confirmation dialogs.
-- **Profile Hub**: View account verification status, total saved methods, and session controls.
-
-### 💳 Supported Payment Channels
-| Payment Type | Stored Fields | Validation Rule |
-|---|---|---|
-| **Bank** | `bankName`, `branchName`, `accountHolderName`, `accountNumber`, `ifscCode` | 11-char IFSC (`^[A-Z]{4}0[A-Z0-9]{6}$`), 9-18 digit account number |
-| **UPI** | `upiId` | Standard UPI VPA format (`^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z0-9.\-_]{2,64}$`) |
-| **Paytm** | `paytmNumber` | 10-digit Indian mobile format |
-| **PayPal** | `paypalEmail` | Valid RFC email address |
-| **USDT** | `usdtAddress` | TRC20 (`T...`) or BEP20/ERC20 (`0x...`) crypto address |
-
-> **Strict Field Isolation**: Irrelevant fields are never stored as empty strings or legacy values. When editing a payment and switching its type (e.g. Bank to UPI), obsolete bank fields are automatically purged from the MongoDB document using `$unset`.
-
-### 🛡️ Administrator Capabilities
-- **Platform Analytics**: Real-time summary metrics for registered users, total payment methods, and distribution across all 5 categories.
-- **Registered Users Directory**: Overview of all users, their assigned roles, and count of configured payment methods.
-- **Searchable Payment Directory**: Paginated directory with backend-powered regex search across username, email, bank name, IFSC, UPI ID, Paytm phone, and USDT address.
-- **Category Filtering**: Dropdown filter to isolate payments by channel.
-- **Deep Record Inspection**: Secure inspection modal detailing complete payment parameters for audit.
+- **Multi-Channel Payment Management**: First-class support for 5 payment methods:
+  - **Bank Accounts**: Account Number, Account Holder Name, Bank Name, IFSC Code.
+  - **UPI VPAs**: UPI ID (e.g. `user@okhdfcbank`).
+  - **Paytm Wallets**: 10-digit Indian Mobile Number.
+  - **PayPal**: Registered PayPal Email Address.
+  - **USDT Wallets**: TRC-20 / ERC-20 Cryptocurrency Wallet Address.
+- **Strict Dynamic Field Isolation**: Only fields applicable to the selected payment channel are collected and persisted. Switching types cleanses and unsets obsolete fields at the database level.
+- **Data Encryption & Blind Indexing**: Sensitive financial numbers are encrypted at rest using **AES-256-GCM** with blind indexing (HMAC-SHA256) for exact-match admin queries without storing plaintext.
+- **Sensitive Field Masking**: Account numbers, UPI IDs, and wallet addresses are masked by default (`••••••••1234`) with explicit 1-click reveal and copy functionality.
+- **Role-Based Access Control (RBAC)**: Distinct permissions for standard users and platform administrators.
+- **Admin Control Center**: System-wide statistics, channel distribution analytics, user directory, and full searchable payment audit log with pagination.
+- **Multi-Platform Google Sign-In**:
+  - Web: Google Identity Services OAuth 2.0.
+  - Mobile: Native Google Play Services Sign-In via `@react-native-google-signin/google-signin`.
+  - Backend: Dual Client ID verification supporting both Web and Android credentials.
+- **100% Cloud-Independent Mobile Client**: Pre-compiled standalone release APK configured to connect directly to the live Render cloud backend (`https://payvault-kudl.onrender.com/api`) 24/7 on 4G/5G mobile data.
 
 ---
 
-## 🔑 Quick Evaluation Credentials
+## Technology Stack
 
-The login screen includes **1-Click quick fill buttons** to evaluate each persona immediately:
-
-| Role / Persona | Email | Password | Pre-configured Data |
-|---|---|---|---|
-| **🛡️ Admin User** | `admin@payvault.com` | `Admin@12345` | Global oversight, metrics, search/filter all payments |
-| **💼 Vivek Nair** | `demo@payvault.com` | `User@12345` | Complete portfolio (Bank, UPI, Paytm, PayPal, USDT) |
-| **💳 Rahul Sharma** | `rahul@payvault.com` | `User@12345` | ICICI Bank Account & Google Pay UPI ID |
-| **🌐 Google Sign-In** | Configured Google account | *Passwordless* | Requires a verified Google ID token and client ID |
-
----
-
-## 💻 Tech Stack
-
-### Web Frontend
-- **Framework**: React 19 (Vite)
-- **Routing**: React Router DOM v7
-- **Styling**: Pure Vanilla CSS & CSS Variables (No Tailwind CSS, No Next.js)
-- **HTTP Client**: Axios with JWT request interceptors and 401 response handling
-- **Icons**: Lucide React
-
-### Mobile Frontend (Android)
-- **Framework**: React Native CLI (JavaScript / JSX)
-- **Navigation**: React Navigation v7 (Native Stack & Bottom Tabs)
-- **Authentication**: `@react-native-google-signin/google-signin` (Google Play Services)
-- **State & Storage**: React Context + AsyncStorage
-- **HTTP Client**: Axios with interceptors & Android emulator host bridge (`10.0.2.2`)
-- **Icons & Clipboard**: Lucide React Native, React Native SVG, React Native Clipboard
-
-### Backend
-- **Runtime**: Node.js & Express.js
-- **Database**: MongoDB with Mongoose ODM
-- **Security**: bcryptjs (10 rounds), jsonwebtoken (JWT), Helmet, CORS, express-rate-limit, google-auth-library
-- **Testing**: Jest & Supertest (27 automated integration tests)
+| Layer | Technologies |
+| :--- | :--- |
+| **Backend API** | Node.js, Express.js (REST API, JWT, Helmet, Express Rate Limit) |
+| **Database** | MongoDB Atlas (Mongoose ODM, compound indexes, blind indexes) |
+| **Web Frontend** | React.js 18, Vite, React Router DOM, Lucide Icons, Axios |
+| **Mobile Client** | React Native CLI 0.76.6, React Navigation v7, AsyncStorage, Lucide React Native |
+| **Native Android** | Android SDK API 34, Gradle 8.10.2, CMake C++ NDK, Hermes JS Engine |
+| **Authentication** | JWT (JSON Web Tokens), Google OAuth 2.0 (Dual Web & Android ID verification) |
+| **Cryptography** | AES-256-GCM, HMAC-SHA256 Blind Indexing, Bcrypt (10 salt rounds) |
+| **Testing** | Jest, Supertest, MongoDB Memory Server (27/27 integration tests) |
+| **Cloud Deployment** | Backend hosted live on Render, Database hosted on MongoDB Atlas |
 
 ---
 
-## 📁 Project Structure
+## Repository Structure
 
 ```
 PayVault/
-├── backend/
-│   ├── config/
-│   │   └── db.js                 # MongoDB connection logic
-│   ├── controllers/
-│   │   ├── adminController.js     # Admin metrics, users list, search & filter
-│   │   ├── authController.js      # Register, login, getMe, verified Google sign-in
-│   │   └── paymentController.js   # Payment CRUD with strict field isolation
-│   ├── middleware/
-│   │   ├── auth.js                # JWT verification middleware
-│   │   ├── errorHandler.js        # Centralized JSON error handler
-│   │   └── requireAdmin.js        # Admin RBAC authorization guard
-│   ├── models/
-│   │   ├── Payment.js             # Strict payment schema with field pruning
-│   │   └── User.js                # User schema with bcrypt & toJSON password stripping
-│   ├── routes/
-│   │   ├── adminRoutes.js         # /api/admin endpoints
-│   │   ├── authRoutes.js          # /api/auth endpoints
-│   │   └── paymentRoutes.js       # /api/payments endpoints
-│   ├── scripts/
-│   │   ├── encryptPayments.js     # Plaintext-payment migration script
-│   │   └── seed.js                # Database seeding script for admin & demo users
-│   ├── tests/
-│   │   └── api.test.js            # Automated API integration tests (27 passing tests)
-│   ├── utils/
-│   │   └── paymentCrypto.js       # AES-256-GCM encryption and blind indexes
-│   ├── validators/
-│   │   └── paymentValidator.js    # Regex and format validators per payment channel
-│   ├── app.js                     # Express app setup, rate-limiting & middleware
-│   ├── server.js                  # HTTP server listener
-│   ├── .env.example               # Backend environment variables template
-│   ├── .gitignore                 # Backend-specific ignore rules
-│   └── package.json
-│
-├── frontend/
-│   ├── public/
-│   │   └── favicon.svg            # PayVault browser icon
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── BottomNav.jsx      # Mobile bottom navigation bar
-│   │   │   ├── ConfirmModal.jsx   # Deletion confirmation modal
-│   │   │   ├── LoadingSpinner.jsx # Polished loading spinner
-│   │   │   ├── Navbar.jsx         # Top navigation bar with user badges
-│   │   │   ├── PaymentCard.jsx    # Styled card with masking, copy & actions
-│   │   │   ├── PaymentForm.jsx    # Dynamic form with channel-isolated inputs
-│   │   │   └── ProtectedRoute.jsx # Authentication & Admin route guards
-│   │   ├── context/
-│   │   │   ├── AuthContext.jsx    # Auth state, login/logout, session persistence
-│   │   │   └── ToastContext.jsx   # Notification toast provider
-│   │   ├── pages/
-│   │   │   ├── AddPayment.jsx     # Add payment channel page
-│   │   │   ├── AdminDashboard.jsx # Admin metrics & registered users directory
-│   │   │   ├── AdminPayments.jsx  # Admin searchable/paginated payment directory
-│   │   │   ├── Dashboard.jsx      # User profile & overview
-│   │   │   ├── EditPayment.jsx    # Edit payment channel page
-│   │   │   ├── Login.jsx          # Login screen with verified Google sign-in & demo pills
-│   │   │   ├── Payments.jsx       # Manage Payments portfolio page
-│   │   │   └── Register.jsx       # User registration page
-│   │   ├── services/
-│   │   │   ├── adminService.js    # Admin API calls
-│   │   │   ├── api.js             # Axios base instance with interceptors
-│   │   │   ├── authService.js     # Auth API calls
-│   │   │   └── paymentService.js  # Payment CRUD API calls
-│   │   ├── styles/
-│   │   │   ├── App.css            # Layout, containers, and responsive rules
-│   │   │   ├── components.css     # Cards, pills, badges, modals, and toasts
-│   │   │   └── index.css          # Design tokens, reset, and base typography
-│   │   ├── App.jsx                # Route declarations & shell layout
-│   │   └── main.jsx               # React DOM root entry
-│   ├── index.html                 # HTML shell with meta tags & Google fonts
-│   ├── vite.config.js             # Vite build configuration
-│   ├── .env.example               # Web frontend environment template
-│   ├── .gitignore                 # Frontend-specific ignore rules
-│   └── package.json
-│
-├── mobile/                        # React Native CLI Android Application
-│   ├── android/                   # Native Android configuration (Gradle, Manifest, Kotlin)
-│   ├── src/
-│   │   ├── components/            # Header, PaymentCard, PaymentForm, ConfirmModal, GoogleIcon
-│   │   ├── context/               # AuthContext (AsyncStorage + GoogleSignin), ToastContext
-│   │   ├── navigation/            # AppNavigator, BottomTabNavigator
-│   │   ├── screens/               # Login, Register, Dashboard, Payments, Add, Edit, Admin
-│   │   ├── services/              # api.js, authService, paymentService, adminService
-│   │   ├── styles/                # theme.js tokens & color palette
-│   │   └── utils/                 # paymentValidator, formatters
-│   ├── App.jsx                    # Mobile root component
-│   ├── index.js                   # Mobile entry point
-│   ├── package.json               # Mobile dependencies
-│   ├── .gitignore                 # Mobile build outputs ignore rules
-│   └── README.md                  # Mobile installation & run guide
-│
-├── Screenshots/
-│   ├── image1.png                 # Web Authentication & Google Sign-In
-│   ├── image2.png                 # Web Manage Payments Portfolio
-│   ├── image3.png                 # Web Dynamic Add / Edit Payment Method
-│   ├── image4.png                 # Web User Profile & Security Overview
-│   ├── image5.png                 # Web Admin Control Center & Analytics
-│   ├── image6.png                 # Mobile Login & Native Google Sign-In (Pixel 3a)
-│   └── image7.png                 # Mobile Admin Control Center & Channel Breakdown (Pixel 3a)
-│
-├── .gitignore                     # Root-level Git ignore file
-└── README.md                      # Comprehensive project documentation
+├── .env.example                     # Root environment variable template
+├── .gitignore                       # Unified gitignore for all sub-projects
+├── README.md                        # Complete project documentation
+├── Screenshots/                     # Verified walkthrough screenshots (1 to 7)
+│   ├── image1.png                   # Web login screen
+│   ├── image2.png                   # Web manage payments dashboard
+│   ├── image3.png                   # Web dynamic add/edit payment
+│   ├── image4.png                   # Web user profile & security
+│   ├── image5.png                   # Web admin control center & charts
+│   ├── image6.png                   # Mobile login with Google Auth & pills
+│   └── image7.png                   # Mobile admin control center & metrics
+├── backend/                         # Express.js REST API server
+│   ├── .env.example                 # Backend environment variable template
+│   ├── app.js                       # Express app configuration & middleware
+│   ├── server.js                    # Server bootstrap & database connection
+│   ├── package.json                 # Backend dependencies & scripts
+│   ├── config/                      # Database configuration
+│   ├── controllers/                 # Route controllers (auth, payment, admin)
+│   ├── middleware/                  # JWT auth, RBAC, error handlers
+│   ├── models/                      # Mongoose models (User, Payment)
+│   ├── routes/                      # API route definitions
+│   ├── scripts/                     # Seed scripts & database migrations
+│   ├── tests/                       # Jest integration test suite (27 tests)
+│   ├── utils/                       # Cryptography, AES-256-GCM, blind indexing
+│   └── validators/                  # Payment input validators
+├── frontend/                        # React.js web client (Vite)
+│   ├── .env.example                 # Frontend environment template
+│   ├── index.html                   # HTML entry point
+│   ├── package.json                 # Frontend dependencies & scripts
+│   ├── vite.config.js               # Vite build configuration
+│   └── src/                         # Components, pages, context, services, styles
+└── mobile/                          # Standalone native React Native CLI app
+    ├── .env.example                 # Mobile environment template
+    ├── PayVault-v1.0.0.apk          # Production release Android APK
+    ├── package.json                 # Mobile dependencies & scripts
+    ├── metro.config.js              # Metro bundler configuration
+    ├── babel.config.js              # Babel transpiler configuration
+    ├── index.js                     # React Native app registration
+    ├── android/                     # Android native project (Gradle, CMake, NDK)
+    └── src/                         # Screens, components, navigation, theme
 ```
 
 ---
 
-## 🗄️ Payment Data Models
-
-### User Schema (`backend/models/User.js`)
-- `username`: String (required, trimmed)
-- `email`: String (required, unique, lowercase, trimmed)
-- `password`: String (required, hashed via bcrypt pre-save hook)
-- `role`: String (`'user'` or `'admin'`, default `'user'`)
-- `createdAt` / `updatedAt`: Timestamps
-- *Security*: `toJSON` transform automatically strips `password` from all API responses.
-
-### Payment Schema (`backend/models/Payment.js`)
-- `user`: ObjectId (ref `'User'`, required, indexed)
-- `paymentType`: Enum (`'Bank'`, `'Paytm'`, `'UPI'`, `'PayPal'`, `'USDT'`)
-- `bankName`, `branchName`, `accountHolderName`, `accountNumber`, `ifscCode`: Populated only for `'Bank'`
-- `paytmNumber`: Populated only for `'Paytm'`
-- `upiId`: Populated only for `'UPI'`
-- `paypalEmail`: Populated only for `'PayPal'`
-- `usdtAddress`: Populated only for `'USDT'`
-- *Field Isolation*: Pre-validation hook deletes fields not associated with the active `paymentType`.
-
----
-
-## 📡 REST API Documentation
-
-### Authentication (`/api/auth`)
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `POST` | `/api/auth/register` | Public | Register a new user account |
-| `POST` | `/api/auth/login` | Public | Authenticate with email & password; returns JWT |
-| `POST` | `/api/auth/google` | Public | Verify a Google ID token and authenticate/auto-register; returns JWT |
-| `GET` | `/api/auth/me` | Authenticated | Fetch authenticated user details and payment stats |
-
-### Payment Management (`/api/payments`)
-*Requires `Authorization: Bearer <token>`. IDOR checks enforce that users can only access their own records.*
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `POST` | `/api/payments` | Authenticated | Add a new payment method (validated per type) |
-| `GET` | `/api/payments` | Authenticated | Retrieve all payment methods for the authenticated user |
-| `GET` | `/api/payments/:id` | Authenticated | Fetch a specific payment method by ID |
-| `PUT` | `/api/payments/:id` | Authenticated | Update a payment method (prunes obsolete fields on type change) |
-| `DELETE`| `/api/payments/:id` | Authenticated | Delete a payment method |
-
-### Administrator (`/api/admin`)
-*Requires `Authorization: Bearer <token>` and `role: 'admin'`.*
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `GET` | `/api/admin/users` | Admin | List all registered users with role and payment count |
-| `GET` | `/api/admin/stats` | Admin | Summary metrics and payment category breakdown |
-| `GET` | `/api/admin/payments` | Admin | Paginated payment directory with search & filter |
-
----
-
-## ⚙️ Environment Variables
-
-### Backend (`backend/.env`)
-```env
-PORT=5000
-MONGODB_URI=mongodb://127.0.0.1:27017/payvault
-JWT_SECRET=your_jwt_secret_key_here
-PAYMENT_ENCRYPTION_KEY=generate_a_64_character_hex_key
-GOOGLE_CLIENT_ID=your_google_oauth_web_client_id
-GOOGLE_ANDROID_CLIENT_ID=your_google_oauth_android_client_id
-CLIENT_URL=http://localhost:5173
-NODE_ENV=development
-```
-
-### Frontend (`frontend/.env`)
-```env
-VITE_API_URL=http://localhost:5000/api
-VITE_GOOGLE_CLIENT_ID=your_google_oauth_web_client_id
-```
-
----
-
-## 🚀 Installation & Running Locally
+##  Getting Started
 
 ### 1. Prerequisites
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [MongoDB](https://www.mongodb.com/) running locally on port `27017` (or MongoDB Atlas URI)
-- Git
-- For Android: Android Studio with SDK API 34+ and an emulator (e.g. Pixel 3a or Pixel 8)
+- **Node.js**: v18 or higher
+- **MongoDB**: Local MongoDB instance (`mongodb://127.0.0.1:27017/payvault`) or a MongoDB Atlas URI
+- **Git**
+- **For Android Development**: Android Studio with SDK API 34+ and platform tools (`adb`)
 
 ### 2. Clone the Repository
 ```bash
@@ -320,106 +147,114 @@ git clone https://github.com/your-username/PayVault.git
 cd PayVault
 ```
 
+---
+
 ### 3. Backend Setup
+
 ```bash
 cd backend
 npm install
-npm run seed:admin   # Seeds the admin and demo evaluation accounts
-npm run dev          # Starts Express server on http://localhost:5000
+cp .env.example .env     # Configure your MONGO_URI and JWT_SECRET
+npm run seed:admin       # Seeds admin and demo evaluation accounts
+npm run dev              # Starts Express server on http://localhost:5000
 ```
-
-### 4. Web Frontend Setup
-```bash
-cd ../frontend
-npm install
-npm run dev          # Starts Vite client on http://localhost:5173
-```
-
-Open `http://localhost:5173` in your browser to start using PayVault.
 
 ---
 
-## 📱 Mobile Setup & Execution (React Native CLI)
+### 4. Web Frontend Setup
 
-### 📦 Standalone Release APK (Instant Evaluation)
-A pre-compiled, production-optimized standalone release APK is generated and included for immediate installation without needing Android Studio, Gradle, or a local Metro server:
+```bash
+cd ../frontend
+npm install
+cp .env.example .env
+npm run dev              # Starts Vite client on http://localhost:5173
+```
 
-- **Location**: `mobile/PayVault-v1.0.0.apk` (or `mobile/android/app/build/outputs/apk/release/app-release.apk`)
+Open `http://localhost:5173` in your browser.
+
+To create an optimized production build:
+```bash
+npm run build            # Generates dist/ bundle in ~2 seconds
+```
+
+---
+
+## Mobile Application (React Native CLI — Android)
+
+### Standalone Release APK (100% Cloud Independent)
+A standalone release APK is compiled and ready for immediate evaluation:
+- **APK Path**: [`mobile/PayVault-v1.0.0.apk`](file:///c:/Users/HP/Downloads/PayVault/mobile/PayVault-v1.0.0.apk)
+- **Live Cloud API**: Connected by default to `https://payvault-kudl.onrender.com/api`.
+- **Zero Laptop Required**: Runs independently on 4G/5G mobile data from anywhere in the world.
 - **Direct ADB Install**:
   ```powershell
   adb install -r mobile/PayVault-v1.0.0.apk
   ```
-- **Physical Phone Installation**: Copy `PayVault-v1.0.0.apk` to any Android device via USB/Drive and tap to install (enable "Install unknown apps" if prompted).
-- **In-App Server Configurator**: When opening the app on a physical phone, tap the **⚙️ Server Host** badge at the bottom of the login screen to point the API URL to your machine's LAN IP (`http://<YOUR_LAN_IP>:5000/api`) or your cloud-deployed backend URL!
+- **Physical Phone Sideloading**: Transfer `PayVault-v1.0.0.apk` to any Android phone and tap to install.
+- **Built-in Host Switcher**: Includes 1-tap presets on the Login screen for ** Cloud Production (Render)**, ** Local Wi-Fi LAN**, and ** Local Emulator**.
 
----
+### Running Mobile from Source (Development Mode)
 
-### 🛠️ Running from Source (Development Mode)
-
-#### 1. Connect Android Port Forwarding
-Run ADB reverse commands so the emulator communicates seamlessly with local backend and Metro:
-```powershell
-$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe reverse tcp:8081 tcp:8081
-$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe reverse tcp:5000 tcp:5000
-```
-
-#### 2. Start Metro Dev Server
 ```powershell
 cd mobile
-npm start
-```
+npm install
 
-#### 3. Launch Android App
-```powershell
+# Connect ADB reverse port forwarding for local backend:
+$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe reverse tcp:8081 tcp:8081
+$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe reverse tcp:5000 tcp:5000
+
+# Start Metro bundler:
+npm start
+
+# In a separate terminal, launch on Android emulator:
 npm run android
 ```
-*(Or compile directly via Gradle: `cd android; .\gradlew.bat app:installDebug -PreactNativeArchitectures=x86_64`)*
+
+### Rebuilding the Release APK
+```powershell
+cd mobile/android
+.\gradlew.bat assembleRelease
+```
+The compiled output is placed at `mobile/android/app/build/outputs/apk/release/app-release.apk`.
 
 ---
 
-## 🧪 Testing
+## API Endpoints
 
-### Backend Automated Test Suite
-The backend includes 27 comprehensive integration tests covering authentication, Google OAuth verification, payment CRUD, field isolation, IDOR prevention, and admin controls.
+### Authentication (`/api/auth`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Register new user account | No |
+| `POST` | `/api/auth/login` | Email & password authentication | No |
+| `POST` | `/api/auth/google` | Google OAuth token verification | No |
+| `GET` | `/api/auth/me` | Fetch authenticated user profile | Yes (JWT) |
 
-```bash
-cd backend
-npm test
-```
+### Payments (`/api/payments`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/payments` | List payments for authenticated user (filter by type) | Yes (JWT) |
+| `POST` | `/api/payments` | Create a new payment method with channel validation | Yes (JWT) |
+| `GET` | `/api/payments/:id` | Get single payment method (IDOR protected) | Yes (JWT) |
+| `PUT` | `/api/payments/:id` | Update payment & prune obsolete fields on type switch | Yes (JWT) |
+| `DELETE` | `/api/payments/:id` | Delete payment method (ownership verified) | Yes (JWT) |
 
-Expected output:
-```
-PASS tests/api.test.js
-  PayVault API Test Suite
-    1. Authentication & Authorization (8 tests)
-    2. Payment Validation & Creation (7 tests)
-    3. Payment Retrieval, Update & Type Changing (3 tests)
-    4. IDOR / Authorization Security (4 tests)
-    5. Admin Authorization & Features (5 tests)
-
-Test Suites: 1 passed, 1 total
-Tests:       27 passed, 27 total
-Snapshots:   0 total
-```
-
-### Web Frontend Production Build
-```bash
-cd frontend
-npm run build
-```
+### Administration (`/api/admin`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/admin/stats` | Channel distribution & aggregate platform counts | Yes (Admin) |
+| `GET` | `/api/admin/users` | Registered users directory | Yes (Admin) |
+| `GET` | `/api/admin/payments` | Searchable payment audit log with pagination | Yes (Admin) |
 
 ---
 
-## 🔒 Security Architecture
+## Security Architecture
 
-1. **IDOR Prevention**: Document ownership is verified on all read, update, and delete routes (`payment.user.toString() === req.user._id.toString()`). Cross-user access is rejected with HTTP 403.
-2. **Strict Field Isolation**: Switching between payment channels purges previous fields at both the application level and MongoDB level (`$unset`), preventing sensitive data leakage.
-3. **Sensitive Field Masking**: Financial identifiers (bank account numbers, UPI IDs, Paytm numbers, crypto addresses) are masked by default (`••••••••6735`) in the UI, requiring explicit user action to reveal.
-4. **Password Protection**: Bcrypt with 10 salt rounds. Plaintext passwords are never stored. Schema-level transforms exclude passwords from all query returns.
-5. **Payment Encryption**: Payment identifiers are encrypted with AES-256-GCM using `PAYMENT_ENCRYPTION_KEY`; blind indexes support exact admin searches without storing searchable plaintext.
-6. **HTTP Headers & Rate Limiting**: Powered by `helmet` to set secure HTTP headers (X-Frame-Options, CSP, etc.) and `express-rate-limit` to prevent brute-force attacks on authentication routes.
+1. **IDOR Prevention**: All payment routes verify ownership (`payment.user.toString() === req.user._id.toString()`). Unauthorized requests are rejected with HTTP 403 Forbidden.
+2. **Dynamic Field Isolation**: Switching payment types triggers an automatic `$unset` operation in MongoDB, ensuring obsolete sensitive credentials never linger in the database.
+3. **AES-256-GCM Encryption**: Protected fields are encrypted at rest with a unique IV per entry and cryptographic authentication tags.
+4. **Blind Indexing (HMAC-SHA256)**: Enables exact-match administrative searches over encrypted fields without storing or indexing plaintext identifiers.
+5. **Masking & UI Safeguards**: Financial credentials remain masked in the UI by default (`••••••••6735`), requiring an explicit user tap to reveal.
+6. **Password Security**: Passwords hashed with `bcrypt` (10 salt rounds) and excluded from query projections.
+7. **HTTP Hardening**: Configured with `helmet` for secure HTTP headers, sanitized CORS origin whitelisting, and `express-rate-limit` against brute-force attacks.
 
 ---
-
-## 📄 License
-MIT License. Open source and free to use for personal and commercial projects.

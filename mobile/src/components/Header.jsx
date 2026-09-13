@@ -40,19 +40,16 @@ const Header = ({ showBack = false, title = null }) => {
 
       {isAuthenticated && user && (
         <View style={styles.headerRight}>
-          {/* Points Pill */}
           <View style={[styles.refBadge, styles.badgePoints]}>
             <Text style={styles.badgeText}>50</Text>
             <Text style={styles.starText}>★</Text>
           </View>
 
-          {/* Balance Pill */}
           <View style={[styles.refBadge, styles.badgeCash]}>
             <Text style={styles.badgeText}>₹0.00</Text>
             <SunMedium size={12} color={colors.warning} />
           </View>
 
-          {/* User Avatar */}
           <TouchableOpacity
             onPress={handleAvatarPress}
             style={styles.avatarRing}

@@ -11,7 +11,6 @@ const seedData = async () => {
     await mongoose.connect(mongoUri);
     console.log('Connected to MongoDB for database seeding...');
 
-    // 1. Seed Administrator
     const adminEmail = (process.env.ADMIN_EMAIL || 'admin@payvault.com').toLowerCase();
     const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@12345';
     const adminUsername = process.env.ADMIN_USERNAME || 'PayVaultAdmin';
@@ -31,7 +30,6 @@ const seedData = async () => {
       console.log(`ℹ️ Admin account already exists: ${adminEmail}`);
     }
 
-    // Helper to seed a user and their payment methods
     const seedUserWithPayments = async (userData, paymentsList) => {
       let user = await User.findOne({ email: userData.email });
       if (!user) {
@@ -53,7 +51,6 @@ const seedData = async () => {
       return user;
     };
 
-    // 2. Seed Vivek Nair (Demo User - All 5 types)
     await seedUserWithPayments(
       { username: 'Vivek Nair', email: 'demo@payvault.com', password: 'User@12345' },
       [
@@ -84,7 +81,6 @@ const seedData = async () => {
       ]
     );
 
-    // 3. Seed Rahul Sharma (Bank & UPI)
     await seedUserWithPayments(
       { username: 'Rahul Sharma', email: 'rahul@payvault.com', password: 'User@12345' },
       [
@@ -103,7 +99,6 @@ const seedData = async () => {
       ]
     );
 
-    // Remove Priya Patel and Amit Verma if previously seeded
     const removedUsers = await User.find({ email: { $in: ['priya@payvault.com', 'amit@payvault.com'] } });
     if (removedUsers.length > 0) {
       const removedIds = removedUsers.map((u) => u._id);

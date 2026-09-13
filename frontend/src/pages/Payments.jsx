@@ -16,7 +16,6 @@ const Payments = () => {
   const [selectedTab, setSelectedTab] = useState('All');
   const [loading, setLoading] = useState(true);
 
-  // Deletion modal state
   const [paymentToDelete, setPaymentToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -49,7 +48,6 @@ const Payments = () => {
       const res = await deletePayment(paymentToDelete._id);
       if (res.success) {
         success('Payment method removed successfully.');
-        // Remove from local state immediately
         setPayments((prev) => prev.filter((p) => p._id !== paymentToDelete._id));
         setPaymentToDelete(null);
       }
@@ -62,7 +60,6 @@ const Payments = () => {
 
   return (
     <div className="animate-fade-in">
-      {/* Screen Title & Add CTA */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '14px' }}>
         <div>
           <h1 className="page-title" style={{ fontSize: '1.35rem' }}>Manage Payments</h1>
@@ -81,7 +78,6 @@ const Payments = () => {
         </Link>
       </div>
 
-      {/* Filter Tabs (Horizontal Pill scroll inspired by screenshots) */}
       <div className="type-selector-bar">
         {FILTER_TABS.map((tab) => (
           <button
@@ -95,7 +91,6 @@ const Payments = () => {
         ))}
       </div>
 
-      {/* Payment Cards List / Loading / Empty State */}
       {loading ? (
         <LoadingSpinner text="Fetching your payment methods..." size={30} />
       ) : payments.length === 0 ? (
@@ -130,7 +125,6 @@ const Payments = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={!!paymentToDelete}
         title="Delete Payment Method"

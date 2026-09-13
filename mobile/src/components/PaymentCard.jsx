@@ -110,7 +110,6 @@ const PaymentCard = ({ payment, onDeleteClick }) => {
 
   return (
     <View style={styles.card}>
-      {/* Top Header */}
       <View style={styles.cardHeader}>
         <View style={styles.cardHeaderLeft}>
           <View style={[styles.channelBadge, { backgroundColor: channelConfig.bg, borderColor: channelConfig.border }]}>
@@ -128,7 +127,6 @@ const PaymentCard = ({ payment, onDeleteClick }) => {
           </Text>
         </View>
 
-        {/* Mask/Reveal Toggle */}
         <TouchableOpacity
           onPress={() => setIsMasked(!isMasked)}
           style={styles.maskToggleBtn}
@@ -145,7 +143,6 @@ const PaymentCard = ({ payment, onDeleteClick }) => {
         </TouchableOpacity>
       </View>
 
-      {/* Account Info Box */}
       <View style={styles.infoBox}>
         <Text style={styles.infoBoxTitle}>Account Information</Text>
 
@@ -184,7 +181,6 @@ const PaymentCard = ({ payment, onDeleteClick }) => {
         )}
       </View>
 
-      {/* Disclaimer Box */}
       <View style={styles.disclaimerCard}>
         <View style={styles.disclaimerHeader}>
           <AlertTriangle size={14} color={colors.warning} />
@@ -198,7 +194,6 @@ const PaymentCard = ({ payment, onDeleteClick }) => {
         </View>
       </View>
 
-      {/* Actions (Edit & Delete) */}
       <View style={styles.cardActions}>
         <TouchableOpacity
           onPress={() => navigation.navigate('EditPayment', { id: payment._id })}

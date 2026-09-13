@@ -64,7 +64,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
       ...prev,
       [name]: name === 'ifscCode' ? value.toUpperCase() : value,
     }));
-    // Clear field-specific error upon typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
     }
@@ -122,7 +121,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
     e.preventDefault();
     if (!validateFrontend()) return;
 
-    // Filter to strictly send only relevant fields
     const payload = { paymentType };
     if (paymentType === 'Bank') {
       payload.bankName = formData.bankName.trim();
@@ -174,7 +172,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
       </div>
 
       <form onSubmit={handleSubmit} noValidate>
-        {/* BANK FIELDS */}
         {paymentType === 'Bank' && (
           <>
             <div className="form-row-2col">
@@ -264,7 +261,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
           </>
         )}
 
-        {/* PAYTM FIELDS */}
         {paymentType === 'Paytm' && (
           <div className="form-group">
             <label className="form-label">
@@ -284,7 +280,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
           </div>
         )}
 
-        {/* UPI FIELDS */}
         {paymentType === 'UPI' && (
           <div className="form-group">
             <label className="form-label">
@@ -303,7 +298,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
           </div>
         )}
 
-        {/* PAYPAL FIELDS */}
         {paymentType === 'PayPal' && (
           <div className="form-group">
             <label className="form-label">
@@ -322,7 +316,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
           </div>
         )}
 
-        {/* USDT FIELDS */}
         {paymentType === 'USDT' && (
           <div className="form-group">
             <label className="form-label">
@@ -341,7 +334,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
           </div>
         )}
 
-        {/* Disclaimer Note Styled Exactly Like Screenshot */}
         <div className="ref-disclaimer-card" style={{ marginTop: '20px' }}>
           <div className="ref-disclaimer-header">
             <AlertTriangle size={15} color="#d97706" />
@@ -358,7 +350,6 @@ const PaymentForm = ({ initialData = null, onSubmit, isSubmitting = false }) => 
           </div>
         </div>
 
-        {/* Dual Form Action Buttons (Previous & Submit) */}
         <div className="ref-dual-buttons" style={{ marginTop: '24px' }}>
           <button
             type="button"

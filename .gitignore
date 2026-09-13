@@ -12,7 +12,7 @@ node_modules/
 .env.production.local
 !.env.example
 
-# Build Outputs
+# Web & Backend Build Outputs
 dist/
 dist-ssr/
 build/
@@ -24,6 +24,13 @@ coverage/
 local.properties
 android/app/build/
 android/build/
+android/.gradle/
+android/.cxx/
+android/app/.cxx/
+android/local.properties
+android/.idea/
+android/app/debug/
+android/app/release/
 *.hprof
 *.apk
 *.aab
@@ -56,3 +63,4 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+*.swp

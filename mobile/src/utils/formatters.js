@@ -1,6 +1,3 @@
-/**
- * Utility string and date formatters for PayVault Mobile
- */
 
 export const maskString = (str, visibleStart = 0, visibleEnd = 4) => {
   if (!str || typeof str !== 'string') return '';

@@ -30,9 +30,7 @@ const Dashboard = () => {
         if (res.success) {
           setPaymentCount(res.count);
         }
-      } catch {
-        // Keep the profile shell available if the payment summary request fails.
-      } finally {
+      } catch {} finally {
         setLoading(false);
       }
     };
@@ -59,7 +57,6 @@ const Dashboard = () => {
 
   return (
     <div className="animate-fade-in dashboard-responsive-layout">
-      {/* Profile Hero Card inspired by reference screenshots */}
       <div className="profile-hero">
         <div className="profile-avatar-large">
           {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
@@ -103,7 +100,6 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* Quick Stats Grid */}
         <div className="profile-stats-grid">
           <div className="stat-box">
             <div className="stat-number">{paymentCount}</div>
@@ -127,7 +123,6 @@ const Dashboard = () => {
         </Link>
       </div>
 
-      {/* Menu / Options List inspired by screenshot */}
       <div className="profile-menu-list">
         <Link to="/payments" className="profile-menu-item">
           <div className="menu-item-left">

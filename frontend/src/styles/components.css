@@ -1,17 +1,16 @@
-/* Reusable Component Styles */
 
-/* Type Selector (Pills) inspired by reference screenshot */
+
 .type-selector-bar {
   display: flex;
   gap: 8px;
   overflow-x: auto;
   padding: 4px 0 12px 0;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .type-selector-bar::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
 }
 
 .type-pill {
@@ -42,7 +41,6 @@
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
-/* Payment Type Badges */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -85,7 +83,6 @@
   border: 1px solid #a7f3d0;
 }
 
-/* Payment Card (Inspired by reference Manage Payment & Details screens) */
 .payment-card {
   background: #ffffff;
   border: 1px solid var(--border-card);
@@ -157,7 +154,6 @@
   letter-spacing: 0.04em;
 }
 
-/* Copy button & Eye toggle button */
 .icon-action-btn {
   padding: 4px;
   color: var(--primary);
@@ -182,7 +178,6 @@
   border-top: 1px solid #f1f5f9;
 }
 
-/* Form Styles */
 .form-card {
   background: #ffffff;
   border: 1px solid var(--border-card);
@@ -249,7 +244,6 @@
   color: var(--text-muted);
 }
 
-/* Disclaimer / Info Box (Inspired by TaskPlanet reference) */
 .info-box {
   background: #f8fafc;
   border: 1px solid var(--border-subtle);
@@ -269,7 +263,6 @@
   color: #92400e;
 }
 
-/* Empty State Box */
 .empty-state {
   background: #ffffff;
   border: 1.5px dashed var(--border-card);
@@ -308,7 +301,6 @@
   max-width: 280px;
 }
 
-/* Modal Backdrop & Dialog */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -359,7 +351,6 @@
   gap: 10px;
 }
 
-/* Toast Notification */
 .toast-container {
   position: fixed;
   top: 18px;
@@ -400,7 +391,6 @@
   background: #2563eb;
 }
 
-/* Profile Screen Components (TaskPlanet reference inspired) */
 .profile-hero {
   background: #ffffff;
   border-radius: var(--radius-lg);
@@ -513,7 +503,6 @@
   color: var(--primary);
 }
 
-/* Admin Dashboard Tables & Elements */
 .admin-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -647,14 +636,12 @@
   border-color: var(--primary);
 }
 
-/* Auth Page Responsive Container */
 .auth-page-container {
   max-width: 440px;
   margin: 20px auto;
   width: 100%;
 }
 
-/* Grid & Layout Adjustments */
 .payments-grid .payment-card {
   margin-bottom: 0;
 }
@@ -663,9 +650,6 @@
   margin-bottom: 0;
 }
 
-/* =======================================================
-   Screenshot UI Polish: Header Badges & Avatar Ring
-======================================================= */
 .header-badge-group {
   display: flex;
   align-items: center;
@@ -726,9 +710,6 @@
   line-height: 1;
 }
 
-/* =======================================================
-   Screenshot UI Polish: Reference Payment Cards
-======================================================= */
 .payment-card-ref {
   background: #ffffff;
   border-radius: 18px;
@@ -801,7 +782,6 @@
   color: #0f172a;
 }
 
-/* Account Information Box inside Card */
 .ref-info-box {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -875,7 +855,6 @@
   transform: scale(1.06);
 }
 
-/* Disclaimer box in card */
 .ref-disclaimer-card {
   background: linear-gradient(135deg, #fff7ed 0%, #eff6ff 100%);
   border-radius: 12px;
@@ -924,7 +903,6 @@
   font-size: 0.82rem;
 }
 
-/* Dual Buttons in Form (Previous & Submit) */
 .ref-dual-buttons {
   display: flex;
   gap: 12px;
@@ -968,9 +946,6 @@
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-/* =======================================================
-   Google Auth & Payment Security Badges in Login
-======================================================= */
 .auth-logo-badge {
   width: 58px;
   height: 58px;
@@ -1048,7 +1023,6 @@
   padding: 0 10px;
 }
 
-/* Demo Accounts Selector */
 .demo-accounts-card {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -1110,7 +1084,6 @@
   margin-top: 1px;
 }
 
-/* Security Trust Banner */
 .security-trust-box {
   display: flex;
   flex-wrap: wrap;
@@ -1131,7 +1104,6 @@
   color: #475569;
 }
 
-/* Google Account Chooser Modal */
 .google-modal-dialog {
   max-width: 400px;
   border-radius: 16px;
@@ -1192,5 +1164,4 @@
   font-size: 0.78rem;
   color: #64748b;
 }
-
 

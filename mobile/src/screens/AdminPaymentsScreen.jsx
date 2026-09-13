@@ -36,13 +36,11 @@ const AdminPaymentsScreen = () => {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Search & Filter state
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('All');
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ total: 0, pages: 1, limit: 10 });
 
-  // Inspection modal state
   const [inspectPayment, setInspectPayment] = useState(null);
   const [copiedKey, setCopiedKey] = useState(null);
 
@@ -111,7 +109,6 @@ const AdminPaymentsScreen = () => {
     <View style={styles.container}>
       <Header showBack={true} title="Payment Records" />
 
-      {/* Filter & Search Bar */}
       <View style={styles.searchSection}>
         <View style={styles.searchInputWrap}>
           <Search size={16} color={colors.textLight} />
@@ -131,7 +128,6 @@ const AdminPaymentsScreen = () => {
           ) : null}
         </View>
 
-        {/* Type Filter Pills */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -157,7 +153,6 @@ const AdminPaymentsScreen = () => {
         </ScrollView>
       </View>
 
-      {/* List / Results */}
       {loading ? (
         <LoadingSpinner text="Querying payment database..." />
       ) : payments.length === 0 ? (
@@ -225,7 +220,6 @@ const AdminPaymentsScreen = () => {
             showsVerticalScrollIndicator={false}
           />
 
-          {/* Pagination Controls */}
           <View style={styles.paginationBar}>
             <Text style={styles.paginationInfo}>
               Page {pagination.page} of {pagination.pages} ({pagination.total} total)
@@ -252,7 +246,6 @@ const AdminPaymentsScreen = () => {
         </>
       )}
 
-      {/* Inspection Modal */}
       {inspectPayment && (
         <Modal
           transparent
@@ -262,7 +255,6 @@ const AdminPaymentsScreen = () => {
         >
           <View style={styles.modalBackdrop}>
             <View style={styles.modalDialog}>
-              {/* Modal Header */}
               <View style={styles.modalHeader}>
                 <View>
                   <Text style={styles.modalTitle}>Payment Record Inspection</Text>
@@ -276,7 +268,6 @@ const AdminPaymentsScreen = () => {
               </View>
 
               <ScrollView style={styles.modalScroll}>
-                {/* User details */}
                 <View style={styles.modalSection}>
                   <Text style={styles.modalSectionTitle}>Owner Information</Text>
                   <Text style={styles.modalFieldText}>Username: {inspectPayment.user?.username}</Text>
@@ -284,7 +275,6 @@ const AdminPaymentsScreen = () => {
                   <Text style={styles.modalFieldText}>Role: {inspectPayment.user?.role}</Text>
                 </View>
 
-                {/* Channel details */}
                 <View style={styles.modalSection}>
                   <Text style={styles.modalSectionTitle}>Financial Parameters</Text>
                   <Text style={styles.modalFieldText}>Type: {inspectPayment.paymentType}</Text>

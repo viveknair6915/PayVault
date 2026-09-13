@@ -1,4 +1,3 @@
-// Regex patterns for validation (100% matched to PayVault backend)
 export const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 export const ACCOUNT_NUMBER_REGEX = /^\d{9,18}$/;
 export const PAYTM_PHONE_REGEX = /^(?:\+91|91|0)?[6-9]\d{9}$/;
@@ -6,10 +5,6 @@ export const UPI_ID_REGEX = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z0-9.\-_]{2,64}$/;
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const USDT_ADDRESS_REGEX = /^(?:0x[a-fA-F0-9]{40}|T[A-Za-z1-9]{33}|[13][a-km-zA-HJ-NP-Z1-9]{25,34})$/;
 
-/**
- * Validates payment payload according to paymentType.
- * Returns { isValid: boolean, errors: Object, cleanData: Object }
- */
 export const validatePaymentInput = (data) => {
   const errors = {};
   const { paymentType } = data;

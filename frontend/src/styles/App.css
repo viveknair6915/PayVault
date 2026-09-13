@@ -1,4 +1,4 @@
-/* PayVault Responsive Layout Styles */
+
 
 .app-wrapper {
   min-height: 100vh;
@@ -9,7 +9,6 @@
   position: relative;
 }
 
-/* App Header */
 .app-header {
   position: sticky;
   top: 0;
@@ -84,7 +83,6 @@
   text-transform: uppercase;
 }
 
-/* Desktop Navigation Links (Visible on screens > 768px) */
 .desktop-nav-links {
   display: flex;
   align-items: center;
@@ -116,7 +114,6 @@
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
-/* Header Right */
 .header-right {
   display: flex;
   align-items: center;
@@ -212,7 +209,6 @@
   border-color: #fca5a5;
 }
 
-/* Main Content Area */
 .app-content {
   max-width: 1200px;
   width: 100%;
@@ -221,7 +217,6 @@
   flex: 1;
 }
 
-/* Page Header Block */
 .page-header-block {
   margin-bottom: 22px;
 }
@@ -239,7 +234,6 @@
   margin-top: 4px;
 }
 
-/* Mobile Bottom Navigation (Visible on mobile, hidden on desktop > 768px) */
 .bottom-nav {
   display: none;
   position: fixed;
@@ -287,7 +281,6 @@
   height: 20px;
 }
 
-/* Responsive Grid Layouts */
 .payments-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -313,7 +306,6 @@
   gap: 14px;
 }
 
-/* Responsive Breakpoints */
 @media (max-width: 860px) {
   .dashboard-responsive-layout {
     grid-template-columns: 1fr;
@@ -366,7 +358,6 @@
   }
 }
 
-/* Buttons */
 .btn-primary {
   background: var(--primary);
   color: white;
@@ -468,7 +459,6 @@
   background: #e2e8f0;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;

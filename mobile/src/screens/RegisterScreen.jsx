@@ -108,7 +108,6 @@ const RegisterScreen = ({ navigation }) => {
           <ArrowLeft size={20} color={colors.textMain} />
         </TouchableOpacity>
 
-        {/* Header */}
         <View style={styles.topHeader}>
           <View style={styles.logoBadge}>
             <ShieldCheck size={36} color="#ffffff" />
@@ -119,9 +118,7 @@ const RegisterScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        {/* Form Card */}
         <View style={styles.formCard}>
-          {/* Google Sign-Up Button */}
           <TouchableOpacity
             onPress={handleGoogleSignIn}
             style={[styles.googleBtn, isGoogleLoading && styles.googleBtnDisabled]}
@@ -138,14 +135,12 @@ const RegisterScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
 
-          {/* Divider */}
           <View style={styles.dividerRow}>
             <View style={styles.dividerLine} />
             <Text style={styles.dividerText}>or register with email</Text>
             <View style={styles.dividerLine} />
           </View>
 
-          {/* Username */}
           <View style={styles.formGroup}>
             <View style={styles.labelRow}>
               <User size={14} color={colors.textMuted} />
@@ -165,7 +160,6 @@ const RegisterScreen = ({ navigation }) => {
             {errors.username && <Text style={styles.errorText}>{errors.username}</Text>}
           </View>
 
-          {/* Email */}
           <View style={styles.formGroup}>
             <View style={styles.labelRow}>
               <Mail size={14} color={colors.textMuted} />
@@ -186,7 +180,6 @@ const RegisterScreen = ({ navigation }) => {
             {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
           </View>
 
-          {/* Password */}
           <View style={styles.formGroup}>
             <View style={styles.labelRow}>
               <Lock size={14} color={colors.textMuted} />
@@ -219,7 +212,6 @@ const RegisterScreen = ({ navigation }) => {
             {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
           </View>
 
-          {/* Confirm Password */}
           <View style={styles.formGroup}>
             <View style={styles.labelRow}>
               <Lock size={14} color={colors.textMuted} />
@@ -241,7 +233,6 @@ const RegisterScreen = ({ navigation }) => {
             )}
           </View>
 
-          {/* Submit Button */}
           <TouchableOpacity
             onPress={handleSubmit}
             style={[styles.submitBtn, isSubmitting && styles.submitBtnDisabled]}
@@ -258,7 +249,6 @@ const RegisterScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {/* Sign In Link */}
         <View style={styles.loginRow}>
           <Text style={styles.loginPrompt}>Already have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
