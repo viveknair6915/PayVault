@@ -1,5 +1,10 @@
 # PayVault — Multi-Payment Management System
 
+[![Download Android APK](https://img.shields.io/badge/Download-Android_APK_(v1.0.0)-2ea44f?logo=android&logoColor=white&style=for-the-badge)](https://github.com/viveknair6915/PayVault/raw/main/mobile/PayVault-v1.0.0.apk)
+[![Live Cloud API](https://img.shields.io/badge/Live_API-Render_Production-46E3B7?logo=render&logoColor=white&style=for-the-badge)](https://payvault-kudl.onrender.com/api/health)
+
+> **Instant Android Download**: [**Download PayVault-v1.0.0.apk (60 MB)**](https://github.com/viveknair6915/PayVault/raw/main/mobile/PayVault-v1.0.0.apk) — Pre-compiled standalone release APK connected 24/7 to the live Render cloud backend. Works independently on 4G/5G mobile data from anywhere in the world!
+
 PayVault is a secure, production-grade, full-stack payment information management platform built with the MERN stack (**MongoDB, Express.js, React.js, Node.js**) alongside a standalone native **React Native CLI (Android)** mobile client. Designed with inspiration from modern fintech interfaces, PayVault provides a unified dashboard for individuals to manage diverse payment methods while giving platform administrators deep search, filter, and analytics capabilities.
 
 ---

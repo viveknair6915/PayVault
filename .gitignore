@@ -33,6 +33,7 @@ android/app/debug/
 android/app/release/
 *.hprof
 *.apk
+!mobile/PayVault-v1.0.0.apk
 *.aab
 *.jsbundle
 .bundle/
