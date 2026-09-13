@@ -341,20 +341,35 @@ Open `http://localhost:5173` in your browser to start using PayVault.
 
 ## 📱 Mobile Setup & Execution (React Native CLI)
 
-### 1. Connect Android Port Forwarding
+### 📦 Standalone Release APK (Instant Evaluation)
+A pre-compiled, production-optimized standalone release APK is generated and included for immediate installation without needing Android Studio, Gradle, or a local Metro server:
+
+- **Location**: `mobile/PayVault-v1.0.0.apk` (or `mobile/android/app/build/outputs/apk/release/app-release.apk`)
+- **Direct ADB Install**:
+  ```powershell
+  adb install -r mobile/PayVault-v1.0.0.apk
+  ```
+- **Physical Phone Installation**: Copy `PayVault-v1.0.0.apk` to any Android device via USB/Drive and tap to install (enable "Install unknown apps" if prompted).
+- **In-App Server Configurator**: When opening the app on a physical phone, tap the **⚙️ Server Host** badge at the bottom of the login screen to point the API URL to your machine's LAN IP (`http://<YOUR_LAN_IP>:5000/api`) or your cloud-deployed backend URL!
+
+---
+
+### 🛠️ Running from Source (Development Mode)
+
+#### 1. Connect Android Port Forwarding
 Run ADB reverse commands so the emulator communicates seamlessly with local backend and Metro:
 ```powershell
 $env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe reverse tcp:8081 tcp:8081
 $env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe reverse tcp:5000 tcp:5000
 ```
 
-### 2. Start Metro Dev Server
+#### 2. Start Metro Dev Server
 ```powershell
 cd mobile
 npm start
 ```
 
-### 3. Launch Android App
+#### 3. Launch Android App
 ```powershell
 npm run android
 ```

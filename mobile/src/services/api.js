@@ -2,19 +2,30 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
-// Default host: 10.0.2.2 for Android Emulator, localhost for iOS simulator
-export const DEFAULT_BASE_URL = Platform.select({
-  android: 'http://10.0.2.2:5000/api',
-  ios: 'http://localhost:5000/api',
-  default: 'http://10.0.2.2:5000/api',
-});
+// Default host: 192.168.1.29 for physical devices on same Wi-Fi, 10.0.2.2 for emulator
+export const DEFAULT_BASE_URL = 'http://192.168.1.29:5000/api';
 
 let customBaseUrl = null;
 
-export const setCustomBaseUrl = (url) => {
+// Initialize custom URL from persistent storage if previously set
+AsyncStorage.getItem('@payvault_server_url')
+  .then((saved) => {
+    if (saved) {
+      customBaseUrl = saved;
+      API.defaults.baseURL = saved;
+    }
+  })
+  .catch(() => {});
+
+export const setCustomBaseUrl = async (url) => {
   customBaseUrl = url;
   if (url) {
     API.defaults.baseURL = url;
+    try {
+      await AsyncStorage.setItem('@payvault_server_url', url);
+    } catch (e) {
+      console.warn('Failed to persist server url:', e);
+    }
   }
 };
 
@@ -25,7 +36,7 @@ const API = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000,
+  timeout: 8000,
 });
 
 // Request Interceptor: Attach JWT Bearer Token from AsyncStorage

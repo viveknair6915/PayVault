@@ -79,7 +79,12 @@ const RegisterScreen = ({ navigation }) => {
       const res = await register(username.trim(), email.trim(), password);
       success(`Welcome to PayVault, ${res.user.username}!`);
     } catch (err) {
-      error(err.response?.data?.message || err.message || 'Registration failed.');
+      const isNetwork = err.message?.includes('Network Error') || err.code === 'ERR_NETWORK';
+      if (isNetwork) {
+        error('Network Error: Cannot reach backend server. Please verify Wi-Fi host URL on Login screen.');
+      } else {
+        error(err.response?.data?.message || err.message || 'Registration failed.');
+      }
     } finally {
       setIsSubmitting(false);
     }

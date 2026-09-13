@@ -82,10 +82,12 @@ const LoginScreen = ({ navigation }) => {
     setPassword(acc.password);
   };
 
-  const handleSaveServerUrl = () => {
-    if (serverUrl.trim()) {
-      setCustomBaseUrl(serverUrl.trim());
-      success('Updated backend server URL!');
+  const handleSaveServerUrl = async (overrideUrl) => {
+    const target = (typeof overrideUrl === 'string' ? overrideUrl : serverUrl).trim();
+    if (target) {
+      setServerUrl(target);
+      await setCustomBaseUrl(target);
+      success(`Backend host set to: ${target}`);
       setShowServerConfig(false);
     }
   };
@@ -101,7 +103,13 @@ const LoginScreen = ({ navigation }) => {
       const res = await login(email.trim(), password);
       success(`Welcome back, ${res.user.username}!`);
     } catch (err) {
-      error(err.response?.data?.message || err.message || 'Login failed.');
+      const isNetwork = err.message?.includes('Network Error') || err.code === 'ERR_NETWORK';
+      if (isNetwork) {
+        error(`Network Error: Cannot reach ${serverUrl}. Tap the host settings below to set your PC's IP.`);
+        setShowServerConfig(true);
+      } else {
+        error(err.response?.data?.message || err.message || 'Login failed.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -275,22 +283,42 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.serverConfigCard}>
             <Text style={styles.serverConfigTitle}>Configure Backend API Host</Text>
             <Text style={styles.serverConfigHint}>
-              Default: http://10.0.2.2:5000/api (Android Emulator)
-              {'\n'}For physical phones: http://&lt;your-pc-ip&gt;:5000/api
+              Select your network or type your custom server IP below:
             </Text>
+
+            {/* Quick Presets */}
+            <View style={styles.presetRow}>
+              <TouchableOpacity
+                onPress={() => handleSaveServerUrl('http://192.168.1.29:5000/api')}
+                style={[styles.presetBtn, serverUrl.includes('192.168.1.29') && styles.presetBtnActive]}
+              >
+                <Text style={[styles.presetBtnText, serverUrl.includes('192.168.1.29') && styles.presetBtnTextActive]}>
+                  📶 Wi-Fi PC (192.168.1.29)
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleSaveServerUrl('http://10.0.2.2:5000/api')}
+                style={[styles.presetBtn, serverUrl.includes('10.0.2.2') && styles.presetBtnActive]}
+              >
+                <Text style={[styles.presetBtnText, serverUrl.includes('10.0.2.2') && styles.presetBtnTextActive]}>
+                  📱 Emulator (10.0.2.2)
+                </Text>
+              </TouchableOpacity>
+            </View>
+
             <TextInput
               style={styles.serverConfigInput}
               value={serverUrl}
               onChangeText={setServerUrl}
-              placeholder="http://10.0.2.2:5000/api"
+              placeholder="http://192.168.1.29:5000/api"
               placeholderTextColor={colors.textLight}
               autoCapitalize="none"
             />
             <TouchableOpacity
-              onPress={handleSaveServerUrl}
+              onPress={() => handleSaveServerUrl()}
               style={styles.serverConfigBtn}
             >
-              <Text style={styles.serverConfigBtnText}>Apply Server URL</Text>
+              <Text style={styles.serverConfigBtnText}>Apply Custom Server URL</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -506,7 +534,34 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: colors.textMuted,
     lineHeight: 14,
+    marginBottom: spacing.xs,
+  },
+  presetRow: {
+    flexDirection: 'row',
+    gap: spacing.xs,
     marginBottom: spacing.sm,
+  },
+  presetBtn: {
+    flex: 1,
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    borderRadius: borderRadius.sm,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    alignItems: 'center',
+  },
+  presetBtnActive: {
+    borderColor: colors.primary,
+    backgroundColor: `${colors.primary}15`,
+  },
+  presetBtnText: {
+    fontSize: 10,
+    fontWeight: typography.weights.bold,
+    color: colors.textMuted,
+  },
+  presetBtnTextActive: {
+    color: colors.primary,
   },
   serverConfigInput: {
     backgroundColor: colors.inputBg,
