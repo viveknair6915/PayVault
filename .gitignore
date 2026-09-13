@@ -18,6 +18,19 @@ dist-ssr/
 build/
 coverage/
 
+# Android & React Native Build Outputs
+.gradle/
+.cxx/
+local.properties
+android/app/build/
+android/build/
+*.hprof
+*.apk
+*.aab
+*.jsbundle
+.bundle/
+.metro/
+
 # Debug and System Logs
 logs/
 *.log
