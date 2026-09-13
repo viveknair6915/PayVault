@@ -287,13 +287,21 @@ const LoginScreen = ({ navigation }) => {
             </Text>
 
             {/* Quick Presets */}
-            <View style={styles.presetRow}>
+            <View style={[styles.presetRow, { flexWrap: 'wrap' }]}>
+              <TouchableOpacity
+                onPress={() => handleSaveServerUrl('https://payvault-kudl.onrender.com/api')}
+                style={[styles.presetBtn, serverUrl.includes('payvault-kudl') && styles.presetBtnActive, { flexBasis: '100%', marginBottom: 4 }]}
+              >
+                <Text style={[styles.presetBtnText, serverUrl.includes('payvault-kudl') && styles.presetBtnTextActive]}>
+                  🌐 Cloud Production (Render — 24/7 Independent)
+                </Text>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleSaveServerUrl('http://192.168.1.29:5000/api')}
                 style={[styles.presetBtn, serverUrl.includes('192.168.1.29') && styles.presetBtnActive]}
               >
                 <Text style={[styles.presetBtnText, serverUrl.includes('192.168.1.29') && styles.presetBtnTextActive]}>
-                  📶 Wi-Fi PC (192.168.1.29)
+                  📶 Wi-Fi LAN
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -301,7 +309,7 @@ const LoginScreen = ({ navigation }) => {
                 style={[styles.presetBtn, serverUrl.includes('10.0.2.2') && styles.presetBtnActive]}
               >
                 <Text style={[styles.presetBtnText, serverUrl.includes('10.0.2.2') && styles.presetBtnTextActive]}>
-                  📱 Emulator (10.0.2.2)
+                  📱 Emulator
                 </Text>
               </TouchableOpacity>
             </View>
@@ -310,7 +318,7 @@ const LoginScreen = ({ navigation }) => {
               style={styles.serverConfigInput}
               value={serverUrl}
               onChangeText={setServerUrl}
-              placeholder="http://192.168.1.29:5000/api"
+              placeholder="https://payvault-kudl.onrender.com/api"
               placeholderTextColor={colors.textLight}
               autoCapitalize="none"
             />

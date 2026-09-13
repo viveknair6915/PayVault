@@ -341,16 +341,17 @@ Open `http://localhost:5173` in your browser to start using PayVault.
 
 ## 📱 Mobile Setup & Execution (React Native CLI)
 
-### 📦 Standalone Release APK (Instant Evaluation)
-A pre-compiled, production-optimized standalone release APK is generated and included for immediate installation without needing Android Studio, Gradle, or a local Metro server:
+### 📦 Standalone Release APK (100% Cloud Independent)
+A pre-compiled, production-optimized standalone release APK is generated and connects directly to the live cloud backend (**Render + MongoDB Atlas**), requiring **NO laptop, NO local server, NO Wi-Fi hotspot, and NO Metro dev server** to run:
 
-- **Location**: `mobile/PayVault-v1.0.0.apk` (or `mobile/android/app/build/outputs/apk/release/app-release.apk`)
+- **Live Cloud API**: `https://payvault-kudl.onrender.com/api`
+- **APK Location**: [`mobile/PayVault-v1.0.0.apk`](file:///c:/Users/HP/Downloads/PayVault/mobile/PayVault-v1.0.0.apk)
 - **Direct ADB Install**:
   ```powershell
   adb install -r mobile/PayVault-v1.0.0.apk
   ```
-- **Physical Phone Installation**: Copy `PayVault-v1.0.0.apk` to any Android device via USB/Drive and tap to install (enable "Install unknown apps" if prompted).
-- **In-App Server Configurator**: When opening the app on a physical phone, tap the **⚙️ Server Host** badge at the bottom of the login screen to point the API URL to your machine's LAN IP (`http://<YOUR_LAN_IP>:5000/api`) or your cloud-deployed backend URL!
+- **Physical Phone Installation**: Copy `PayVault-v1.0.0.apk` to any Android phone via USB/Drive or download it directly, tap to install, and run on 4G/5G mobile data from anywhere in the world!
+- **In-App Host Switcher**: A built-in server host manager is included at the bottom of the Login Screen with 1-tap presets for **🌐 Cloud Production (Render)**, **📶 Wi-Fi LAN**, and **📱 Local Emulator**.
 
 ---
 
